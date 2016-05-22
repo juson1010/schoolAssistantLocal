@@ -65,6 +65,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 7.0.68" level="application_server_libraries" />
     <orderEntry type="library" name="SSH" level="project" />
+    <orderEntry type="library" name="commons-dbcp2-2.1.1" level="project" />
+    <orderEntry type="library" name="commons-pool2-2.4.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -117,7 +119,5 @@
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:4.3.1.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.validation:validation-api:1.0.0.GA" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.18.1-GA" level="project" />
-    <orderEntry type="library" name="commons-dbcp2-2.1.1" level="project" />
-    <orderEntry type="library" name="commons-pool2-2.4.2" level="project" />
   </component>
 </module>
