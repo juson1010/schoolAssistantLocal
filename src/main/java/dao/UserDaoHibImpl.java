@@ -9,5 +9,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class UserDaoHibImpl extends BaseDaoHibImpl<User> implements UserDao {
+    public boolean checkUser(String username, String password) {
+
+        return true;
+    }
+
 
 }

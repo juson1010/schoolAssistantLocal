@@ -4,9 +4,6 @@ import javax.persistence.*;
 
 import java.util.Date;
 
-enum SexType{
-    male,female;
-}
 
 
 @Entity
@@ -23,6 +20,7 @@ public class UserInfo {
     private String name;
 
 
+    //   @Enumerated(EnumType.ORDINAL)
     @Column(name="sex")
     private String sex;
 
@@ -73,16 +71,27 @@ public class UserInfo {
         this.name = name;
     }
 
+//
+//
+//    public SexType getSex() {
+//		return sex;
+//	}
+//
+//	public void setSex(SexType sex) {
+//		this.sex = sex;
+//	}
+
+
+    public Integer getAge() {
+        return age;
+    }
+
     public String getSex() {
         return sex;
     }
 
     public void setSex(String sex) {
         this.sex = sex;
-    }
-
-    public Integer getAge() {
-        return age;
     }
 
     public void setAge(Integer age) {

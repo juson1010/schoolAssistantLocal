@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
 	<meta charset="utf-8">
@@ -32,7 +33,7 @@
 		<!--</div>-->
 
 
-		<form action="login" method="post">
+		<form action="login.action" method="post">
 			<div class="login-form">
 				<div class="form-group">
 					<input name="user" type="text" class="form-control login-field" value="" placeholder="Enter your name" id="login-name" />

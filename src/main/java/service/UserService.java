@@ -20,7 +20,7 @@ public interface UserService {
 
     public User getUser(String userId);
 
-    public List getAllUsers(String school,String academy);
+    public List getAllUsers(String school, String academy);
     public List getUsers(String hql);
 
     public PageBean getAllUsersByPage();
@@ -28,4 +28,5 @@ public interface UserService {
     public boolean verifyPassword(User user, String password) ;
     public  void refreshToken(User user) ;
 
+    public boolean checkUser(String username,String password);
 }

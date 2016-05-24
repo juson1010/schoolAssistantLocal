@@ -1,41 +1,43 @@
 package controller;
 
+import java.util.Map;
+
+import service.UserService;
+import service.UserServiceImpl;
+
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import dao.UserDao;
-import dao.UserDaoHibImpl;
-import domain.User.User;
-import domain.User.UserInfo;
 
-import java.util.Date;
+public class LoginAction extends ActionSupport{
 
-/**
- * Created by cqx on 2016/5/15.
- */
-public class LoginAction extends ActionSupport {
+    private String username;
+    private String password;
+    public String login() throws Exception{
+        System.out.println("username "+username+" password : "+password);
+        UserService userService=new UserServiceImpl();
+        boolean flag=userService.checkUser(username, password);
+        if (flag) {
+            Map session=ActionContext.getContext().getSession();
+            session.put("user", username);
+            return "success";
+        }else {
+            return "failure";
+        }
 
-    public String login(){
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        UserDao userDao = new UserDaoHibImpl();
-        User user = new User();
-        user.setPassword("123");
-        user.setUsername("admin01");
-//        userService.generateToken(user);
-        UserInfo userInfo = new UserInfo();
-        userInfo.setAcademy("软工");
-        userInfo.setAge(22);
-        userInfo.setEnrolmentDate(new Date(2013, 9, 1));
-        userInfo.setInfoVisible(true);
-        userInfo.setLabel("懒人无留言");
-
-        user.setUserInfo(userInfo);
-//        userService.createUser(user);
-        userDao.save(user);
-        System.out.println("done!");
-
-
-        return SUCCESS;
     }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
 
 }

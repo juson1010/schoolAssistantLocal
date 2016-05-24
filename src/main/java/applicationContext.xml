@@ -48,7 +48,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">
-					org.hibernate.dialect.MySQL5Dialect
+					org.hibernate.dialect.MySQL5InnoDBDialect
 				</prop>
 
 				<prop key="hibernate.max_fetch_depth">2</prop>
@@ -61,15 +61,19 @@
 		<property name="annotatedClasses">
 			<!-- 以下用来列出Hibernate的持久化类 -->
 			<list>
-				<value>domain.UserTable.User</value>
-				<value>domain.UserTable.UserInfo</value>
+				<value>domain.User.User</value>
+				<value>domain.User.UserInfo</value>
+				<value>domain.Resource.ResourceBase</value>
+				<value>domain.Form.Form</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- DAO相关 -->
-	<bean id="daoTemplate" abstract="true" p:sessionFactory-ref="sessionFactory"
-		  lazy-init="true" />
+	<bean id="daoTemplate" abstract="true" >
+		<property name="sessionFactory" ref="sessionFactory"/>
+
+	</bean>
 
 	<bean id="commentDao" class="dao.CommentDaoHibImpl"
 		  parent="daoTemplate" />
@@ -97,11 +101,6 @@
 	<bean id="userService" class="service.UserServiceImpl" >
 		<property name="userDao" ref="userDao"/>
 	</bean>
-
-
-
-
-
 
 	<!-- 事务配置 -->
 	<bean id="transactionManager"

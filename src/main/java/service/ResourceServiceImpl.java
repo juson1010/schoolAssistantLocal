@@ -17,10 +17,10 @@ public class ResourceServiceImpl implements ResourceService {
     private EBookDao eBookDao;
     private PaperDao paperDao;
     private CoursewareDao coursewareDao;
+    private UserDao userDao;
 
 
 
-    @Override
     public boolean createResource(ResourceBase resource, ResourceType resourceType) {
 
         switch (resourceType){
@@ -51,11 +51,10 @@ public class ResourceServiceImpl implements ResourceService {
     * 查询资源是否由用户创建
     *
     * */
-    @Override
     public boolean deleteResource(ResourceBase resource, User user) {
 
         ResourceType type = resource.getTypeOfResourceType();
-        User creator = resource.getCreator();
+        User creator = userDao.get(User.class,  resource.getCreatorUserId());
         if (creator.getId() != user.getId()) return false;
         switch (type){
 
@@ -79,7 +78,6 @@ public class ResourceServiceImpl implements ResourceService {
 
     }
 
-    @Override
     public boolean updateResource(ResourceBase resource, ResourceType resourceType) {
 
 
@@ -105,7 +103,6 @@ public class ResourceServiceImpl implements ResourceService {
         return true;
     }
 
-    @Override
     public PageBean getResource(SearchCondition searchCondition) {
         /*补充 */
 

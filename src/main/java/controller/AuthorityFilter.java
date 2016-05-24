@@ -33,7 +33,7 @@ public class AuthorityFilter implements Filter {
         String contextPath = req.getContextPath();
         String uri = request_uri.substring(contextPath.length());
         if (req.getSession().getAttribute("user") == null) {
-            if (uri.equals("/login.html") || request_uri.indexOf("css/") > 0
+            if (uri.equals("/login.jsp") || request_uri.indexOf("css/") > 0
                     || request_uri.indexOf("img/") > 0
                     || request_uri.indexOf("js/") > 0
                     || uri.equals("/login.action")) {
@@ -43,7 +43,8 @@ public class AuthorityFilter implements Filter {
             else
             {
                 //res.sendRedirect("/openfund/login.jsp");
-                req.getRequestDispatcher("/login.html").forward(req, res);
+                System.out.println("/login.jsp !!");
+                req.getRequestDispatcher("/login.jsp").forward(req, res);
             }
         }
         else arg2.doFilter(arg0, arg1);

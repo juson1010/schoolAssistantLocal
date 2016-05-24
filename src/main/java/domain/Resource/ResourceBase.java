@@ -1,63 +1,89 @@
 package domain.Resource;
 
-import domain.Comment;
-import domain.User.User;
-
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.Table;
 
-
+import org.hibernate.annotations.GenericGenerator;
+@Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Table(name="ResourceBase")
 public class ResourceBase {
-	
-	/*��Դ���*/
-	private String id;
-	
+
+	@Id
+	@GenericGenerator(name="resource_hilo" ,strategy="hilo")
+	@GeneratedValue(generator="resource_hilo")
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="resource_id")
+	private Integer id;
+
+	@Column(name="filename")
 	private String filename;
 
+	@Column(name="createTime")
 	private String createTime;
-	
-	/*��Դ����*/
-	private ResourceType typeOfResourceType;
-	
-	/*������֤��Դ�Ƿ��ظ�*/
-	private String md5;
-	
-	/*����*/
-	private Integer points;
-	
-	/*���ش���*/
-	private Integer downloads;
-	
-	/*�ļ���С*/
-	private double fileSize;
-	
-	/*���Ŷ�*/
-	private Integer reliability;
-	
-	/*������*/
-	private Integer like;
-	
-	/*����*/
-	private Integer dislike;
-	
-	/*����*/
-	private List<Comment> comments;
 
-	private User creator;
-	
-	/*���*/
+	@Enumerated(EnumType.STRING)
+	@Column(name="typeOfResourceType")
+	private ResourceType typeOfResourceType;
+
+	@Column(name="md5")
+	private String md5;
+
+	@Column(name="points")
+	private Integer points;
+
+	@Column(name="downloads")
+	private Integer downloads;
+
+	@Column(name="fileSize")
+	private double fileSize;
+
+	@Column(name="reliability")
+	private Integer reliability;
+
+	@Column(name="likes")
+	private Integer likes;
+
+	@Column(name="dislike")
+	private Integer dislike;
+
+	@ElementCollection(targetClass=String.class)
+	@CollectionTable(name="comment_info",joinColumns=@JoinColumn(name="resource_id",nullable=true))
+	@Column(name="comments_id")
+	private List<String> comments;
+
+
+	@Column(name="creatorUserId")
+	private String creatorUserId;
+
+	@Column(name="description")
 	private String description;
 
 	/*资源所在链接*/
+	@Column(name="url")
 	private String url;
-	
-	
-	
-	public String getId() {
+
+	public ResourceBase(){}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -70,12 +96,17 @@ public class ResourceBase {
 	}
 
 
-	public User getCreator() {
-		return creator;
+
+
+
+
+
+	public String getCreatorUserId() {
+		return creatorUserId;
 	}
 
-	public void setCreator(User creator) {
-		this.creator = creator;
+	public void setCreatorUserId(String creatorUserId) {
+		this.creatorUserId = creatorUserId;
 	}
 
 	public String getCreateTime() {
@@ -127,11 +158,11 @@ public class ResourceBase {
 	}
 
 	public Integer getLike() {
-		return like;
+		return likes;
 	}
 
-	public void setLike(Integer like) {
-		this.like = like;
+	public void setLike(Integer likes) {
+		this.likes = likes;
 	}
 
 	public Integer getDislike() {
@@ -142,13 +173,13 @@ public class ResourceBase {
 		this.dislike = dislike;
 	}
 
-	
 
-	public List<Comment> getComments() {
+
+	public List<String> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<Comment> comments) {
+	public void setComments(List<String> comments) {
 		this.comments = comments;
 	}
 
@@ -176,4 +207,5 @@ public class ResourceBase {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 }
