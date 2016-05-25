@@ -36,11 +36,12 @@
 		<form action="login.action" method="post">
 			<div class="login-form">
 				<div class="form-group">
-					<input name="user" type="text" class="form-control login-field" value="" placeholder="Enter your name" id="login-name" />
+					<input name="username" type="text" class="form-control login-field" value="" placeholder="Enter your name" id="login-name" />
 					<label class="login-field-icon fui-user" for="login-name"></label>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group"
+				>
 					<input name="password" type="password" class="form-control login-field" value="" placeholder="Password" id="login-pass" />
 					<label class="login-field-icon fui-lock" for="login-pass"></label>
 				</div>

@@ -32,7 +32,7 @@ public class AuthorityFilter implements Filter {
         String request_uri = req.getRequestURI();
         String contextPath = req.getContextPath();
         String uri = request_uri.substring(contextPath.length());
-        if (req.getSession().getAttribute("user") == null) {
+        if (req.getSession().getAttribute("username") == null) {
             if (uri.equals("/login.jsp") || request_uri.indexOf("css/") > 0
                     || request_uri.indexOf("img/") > 0
                     || request_uri.indexOf("js/") > 0
