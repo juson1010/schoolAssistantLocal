@@ -17,7 +17,7 @@
     <link id="bootstrap-style" href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
     <link id="base-style" href="css/style.css" rel="stylesheet">
-    <link id="base-style-responsive" href="css/style-responsive.css" rel="stylesheet">
+    <link id    ="base-style-responsive" href="css/style-responsive.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext' rel='stylesheet' type='text/css'>
     <!-- end: CSS -->
 
@@ -35,7 +35,6 @@
     <!-- start: Favicon -->
     <link rel="shortcut icon" href="img/favicon.ico">
     <!-- end: Favicon -->
-
 
 </head>
 <body>
@@ -390,17 +389,23 @@
                         </div>
                         <div class="box-content">
 
-                            <a class="quick-button span2">
-                                <i class="icon-plus"></i>
-                                <p>新行</p>
+                            <a class="quick-button span6" id="form_add">
+                            <i class="icon-plus" ></i>
+                            <p>发布表格</p>
                             </a>
 
+
+                            <a class="quick-button span6" id="form_remove">
+                                <i class="icon-plus"></i>
+                                <p>历史表格</p>
+                            </a>
 
                             <div class="clearfix"></div>
                         </div>
                     </div><!--/span-->
 
                 </div><!--/row-->
+
 
                 <div class="row-fluid sortable">
                     <div class="box span12">
@@ -412,8 +417,35 @@
                             </div>
                         </div>
                         <div class="box-content">
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable display" id="formAddTable">
+                                <thead >
+                                <tr>
+                                    <th>序号</th>
+                                    <th>标题名</th>
+                                    <th>单元类型</th>
+                                    <th>是否必填</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+
+
+                            </table>
+                        </div>
+                    </div><!--/span-->
+
+                </div><!--/row-->
+                <div class="row-fluid sortable">
+                    <div class="box span12">
+                        <div class="box-header" data-original-title>
+                            <h2><i class="halflings-icon white user"></i><span class="break"></span>Members</h2>
+                            <div class="box-icon">
+                                <a href="#" class="btn-setting"><i class="halflings-icon white wrench"></i></a>
+                                <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
+                            </div>
+                        </div>
+                        <div class="box-content">
                             <table class="table table-striped table-bordered bootstrap-datatable datatable">
-                                <thead>
+                                <thead >
                                 <tr>
                                     <th>Username</th>
                                     <th>Date registered</th>
@@ -553,6 +585,7 @@
                 </div><!--/row-->
 
 
+
             </div><!--/.fluid-container-->
 
             <!-- end: Content -->
@@ -605,7 +638,6 @@
     </div>
 
 <!-- start: JavaScript-->
-<script data-main="assets/js/main.js" src="assets/js/lib/require.js" ></script>
 
 
 <script src="js/jquery-1.9.1.min.js"></script>
@@ -662,6 +694,66 @@
 <script src="js/retina.js"></script>
 
 <script src="js/custom.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            var formAddUnitTitle = "<td>userrname</td>";
+            var formAddUnitType = "<td>type</td>";
+            var formAddUnitIsRequired = "<td>isRequired</td>";
+            var cnt = 1;
+            var formAddUnitAction = "<td class='center'> " +
+                    "<a class='btn btn-info' href='#' id='dataTableUpdateRow_"+cnt+ "'> " +
+                    "<i class='halflings-icon white edit'></i> </a> " +
+                    "<a class='btn btn-danger' href='#' id='dataTableRemoveRow_"+cnt+ "'> " +
+                    "<i class='halflings-icon white trash'></i> </a> </td>";
+            var formAddUnit = "<tr>" +formAddUnitTitle+formAddUnitType+
+                    formAddUnitIsRequired+formAddUnitAction+"</tr>";
+
+
+            var formAddTable = $("#formAddTable").DataTable();
+
+           cnt = 1;
+            $("#form_add").click(function(){
+                formAddTable.row.add( [
+                    cnt,
+                    formAddUnitTitle,
+                    formAddUnitType,
+                    formAddUnitIsRequired,
+                    "<td class='center'> " +
+                    "<a class='btn btn-info' href='#' id='dataTableUpdateRow_"+cnt+ "'> " +
+                    "<i class='halflings-icon white edit'></i> </a> " +
+                    "<a class='btn btn-danger' href='#' id='dataTableRemoveRow_"+cnt+ "'> " +
+                    "<i class='halflings-icon white trash'></i> </a> </td>"
+                ] ).draw( false );
+
+                cnt++;
+
+            });
+
+            $('#formAddTable tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    formAddTable.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            } );
+
+            $('#form_remove').click( function () {
+                formAddTable.row('.selected').remove().draw( false );
+            } );
+
+
+
+            $("#form_remove").click(function(){
+               $("#formAdd_thead").remove();
+            });
+        });
+    </script>
+
 <!-- end: JavaScript-->
 
 </body>
