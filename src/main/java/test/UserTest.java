@@ -1,43 +1,72 @@
 package test;
 
 import dao.UserDao;
-import dao.UserDaoHibImpl;
 import dao.UserInfoDao;
-import dao.UserInfoDaoHibImpl;
 import domain.User.User;
 import domain.User.UserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import service.UserService;
-import service.UserServiceImpl;
-
 import java.util.Date;
 
 /**
  * Created by cqx on 16/5/12.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:src/applicationContext.xml"})
+@ContextConfiguration(locations = "file:src/main/java/applicationContext.xml")
 public class UserTest {
 
-    @Before
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private UserDao userDao;
+
+	@Autowired
+	private UserInfoDao userInfoDao;
+
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
+	public UserInfoDao getUserInfoDao() {
+		return userInfoDao;
+	}
+
+	public void setUserInfoDao(UserInfoDao userInfoDao) {
+		this.userInfoDao = userInfoDao;
+	}
+
+	@Before
     public void setUp() throws Exception
     {
-//    	userService = new UserServiceImpl();
 
-    }
+	}
 
 
 	 @Test
 	 public void testFindAll() {
 
 
-		 UserService userService = new UserServiceImpl();
 		 System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		 UserDao userDao = new UserDaoHibImpl();
 		 User user = new User();
 		 user.setPassword("123");
 		 user.setUsername("admin01");
@@ -52,11 +81,12 @@ public class UserTest {
 		 user.setUserInfo(userInfo);
 //        userService.createUser(user);
 //        userDao.save(user);
-		 UserInfoDao userInfoDao = new UserInfoDaoHibImpl();
-		 userInfoDao.save(userInfo);
+//		 userInfoDao.save(userInfo);
 		 userService.createUser(user);
 		 System.out.println("done!");
 	    }
+
+
 
 
 }

@@ -17,15 +17,17 @@ public class AuthorityInterceptor extends AbstractInterceptor
     public String intercept(ActionInvocation invocation)
             throws Exception
     {
+        System.out.println("endter Interceptor!!!!!");
         //取得请求相关的ActionContext实例
         ActionContext ctx = invocation.getInvocationContext();
         Map session = ctx.getSession();
         //取出名为user的Session属性
-        String user = (String)session.get("user");
+        String user = (String)session.get("username");
         if (user != null )
         {
             return invocation.invoke();  //放行
         }
+        System.out.println("leave Interceptor!!!!!");
         //直接返回login的逻辑视图
         return "login";
     }

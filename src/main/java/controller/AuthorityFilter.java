@@ -26,7 +26,8 @@ public class AuthorityFilter implements Filter {
 
     public void doFilter(ServletRequest arg0, ServletResponse arg1,
                          FilterChain arg2) throws IOException, ServletException {
-        System.out.print("???????????????????????????");
+//        System.arraycopy();
+        System.out.println("Enter AuthorityFileter !");
         HttpServletRequest req = (HttpServletRequest) arg0;
         HttpServletResponse res = (HttpServletResponse) arg1;
         String request_uri = req.getRequestURI();
@@ -36,14 +37,15 @@ public class AuthorityFilter implements Filter {
             if (uri.equals("/login.jsp") || request_uri.indexOf("css/") > 0
                     || request_uri.indexOf("img/") > 0
                     || request_uri.indexOf("js/") > 0
-                    || uri.equals("/login.action")) {
+                    || uri.equals("/login.action") ) {
+                System.out.println("doFilter !!");
                 arg2.doFilter(arg0, arg1);
                 return;
             }
             else
             {
                 //res.sendRedirect("/openfund/login.jsp");
-                System.out.println("/login.jsp !!");
+                System.out.println("forward to login.jsp !!");
                 req.getRequestDispatcher("/login.jsp").forward(req, res);
             }
         }

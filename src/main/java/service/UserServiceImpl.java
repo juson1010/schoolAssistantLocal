@@ -4,7 +4,6 @@ package service;
 import dao.UserDao;
 import dao.UserDaoHibImpl;
 import dao.UserInfoDao;
-import dao.UserInfoDaoHibImpl;
 import domain.User.User;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -13,8 +12,8 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Service;
 
+import org.springframework.stereotype.Service;
 import util.PageBean;
 
 import java.util.Date;
@@ -23,23 +22,22 @@ import java.util.List;
 /**
  * Created by cqx on 16/5/11.
  */
+@Service
 public class UserServiceImpl implements UserService {
 
     //  private ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+    @Autowired
     private UserDao userDao ;// ctx.getBean("userDao", UserDaoHibImpl.class) ;
 
-//	public UserServiceImpl(){
-//
-//		System.out.println("userDao is "+(userDao==null)+" userInfoDao is ");
-//    	if (userDao == null) {
-//    		 ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-//    		 userDao = ctx.getBean("userDao",UserDaoHibImpl.class);
-//
-//		}
-//	}
+    @Autowired
+    private UserInfoDao userInfoDao;
+
+    public void setUserInfoDao(UserInfoDao userInfoDao) {
+        this.userInfoDao = userInfoDao;
+    }
 
     public boolean checkUser(String username, String password) {
-        System.out.println("userDao is "+(userDao==null)+" userInfoDao is ");
+        System.out.println("userDao  null is "+(userDao==null)+" ");
         if (userDao == null) {
             ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
             userDao = ctx.getBean("userDao",UserDaoHibImpl.class);
@@ -50,14 +48,8 @@ public class UserServiceImpl implements UserService {
 
     public boolean createUser(User user) {
 
-        System.out.println("userDao is "+(userDao==null)+" userInfoDao is ");
-        if (userDao == null) {
-            ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-            userDao = ctx.getBean("userDao",UserDaoHibImpl.class);
 
-        }
-
-        System.out.println("null ? "+(userDao == null));
+        userInfoDao.save(user.getUserInfo());
         userDao.save(user);
         return true;
     }

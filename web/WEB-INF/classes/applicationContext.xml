@@ -63,6 +63,7 @@
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">false</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.current_session_context_class">thread</prop>
 			</props>
 		</property>
 		<property name="annotatedClasses">
@@ -107,7 +108,6 @@
 
 	<bean id="userService" class="service.UserServiceImpl" >
 		<property name="userDao" ref="userDao"/>
-		<property name="userInfoDao" ref="userInfoDao"/>
 	</bean>
 
 
@@ -122,6 +122,8 @@
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
+			<tx:method name="create*" read-only="true"/>
+			<tx:method name="save" read-only="true"/>
 			<tx:method name="*" timeout="120" propagation="REQUIRED" />
 
 		</tx:attributes>

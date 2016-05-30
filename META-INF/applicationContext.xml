@@ -2,16 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	   xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
-	   xmlns:context="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 	http://www.springframework.org/schema/aop
-	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
-
-	<context:annotation-config/>
 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		  destroy-method="close">
@@ -42,11 +39,6 @@
 			等方法来提升连接测试的性能。Default: false -->
 		<property name="testConnectionOnCheckout" value="false" />
 	</bean>
-
-
-
-
-
 	<!-- 配置hibernate的sessionfactory -->
 	<bean id="sessionFactory"
 		  class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -63,6 +55,7 @@
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">false</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.current_session_context_class">thread</prop>
 			</props>
 		</property>
 		<property name="annotatedClasses">
@@ -70,8 +63,8 @@
 			<list>
 				<value>domain.User.User</value>
 				<value>domain.User.UserInfo</value>
-
-
+				<value>domain.Resource.ResourceBase</value>
+				<value>domain.Form.Form</value>
 			</list>
 		</property>
 	</bean>
@@ -107,11 +100,7 @@
 
 	<bean id="userService" class="service.UserServiceImpl" >
 		<property name="userDao" ref="userDao"/>
-		<property name="userInfoDao" ref="userInfoDao"/>
 	</bean>
-
-
-
 
 	<!-- 事务配置 -->
 	<bean id="transactionManager"
@@ -123,14 +112,11 @@
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
 			<tx:method name="*" timeout="120" propagation="REQUIRED" />
-
 		</tx:attributes>
 	</tx:advice>
 	<aop:config>
 		<aop:advisor advice-ref="txAdvice"
 					 pointcut="execution(* service.*.*(..))" />
-
-
 	</aop:config>
 </beans>
 	

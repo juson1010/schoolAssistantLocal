@@ -1,5 +1,9 @@
 package domain.Resource;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * Created by cqx on 16/5/10.
  */
@@ -8,12 +12,14 @@ package domain.Resource;
 * 试卷
 *
 * */
+@Entity
+@DiscriminatorValue("试卷")
 public class Paper extends ResourceBase {
-
+    @Column(name="paper_school")
     private String school;
-
+    @Column(name="paper_course")
     private String course;
-
+    @Column(name="paper_time")
     private String time;
 
     public Paper(){}

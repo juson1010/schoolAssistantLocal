@@ -1,15 +1,21 @@
 package dao;
 
 import org.hibernate.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Repository;
+import util.HibernateSessionFactory;
+import util.HibernateUtil;
+import util.SpringSessionFactory;
 
 import java.util.List;
 import java.io.Serializable;
-
+@Repository
 public class BaseDaoHibImpl<T> implements BaseHibDao<T> {
     // DAO组件进行持久化操作底层依赖的SessionFactory组件
    // private ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+    @Autowired
     protected SessionFactory sessionFactory ;
     protected int rowsCount;
 
@@ -20,6 +26,12 @@ public class BaseDaoHibImpl<T> implements BaseHibDao<T> {
     // spring 建议调用sessionFactory.getCurrentSession()方法得到方式
     // 还有sessionFactory.openSession()
     public Session getSession() {
+
+        if (sessionFactory == null){
+
+            sessionFactory = SpringSessionFactory.getSessionFactory();
+        }
+
         return sessionFactory.getCurrentSession();
     }
 
