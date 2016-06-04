@@ -420,7 +420,7 @@
                         <table class="table table-striped table-bordered bootstrap-datatable datatable display" id="formAddTable">
                             <thead >
                             <tr>
-                                <th>序号	</th>
+                                <!--<th>序号	</th>-->
                                 <th>标题名</th>
                                 <th>单元类型</th>
                                 <th>是否必填</th>
@@ -703,26 +703,31 @@
         var formAddTable = $("#formAddTable").DataTable();
 
         cnt = 1;
+        var cur_id;
         $("#form_add").click(function(){
             formAddTable.row.add( [
-                "<td class='formAdd_id'>"+cnt+"</td>",
-                "<td id='formAddTitle_"+cnt+ "'> " +"userrname</td>",
-                "<td id='formAddType_"+cnt+ "'> " +"type</td>",
-                "<td id='formAddType_"+cnt+ "'>"+"isRequired</td>",
+//                "<td ><span class='formAdd_id'>"+cnt+"</span></td>",
+                "<td ><span class='formAddTitle'   id='formAddTitle_"+cnt+ "'> " +"userrname </span></td>",
+                "<td ><span class='formAddType' id='formAddType_"+cnt+ "'> " +"type </span></td>",
+                "<td ><span class='formAddRequired' id='formAddRequired_"+cnt+ "'>"+"isRequired</span></td>",
                 "<td class='center'> " +
-                "<a class='btn btn-info btn-setting'  href='#' id='dataTableUpdateRow_"+cnt+ "'> " +
+                "<a class='btn btn-info btn-setting formUpdateBtn'    id='dataTableUpdateRow_"+cnt+ "'  value='"+cnt+  "'  > " +
                 "<i class='halflings-icon white edit'></i> </a> " +
                 "<a class='btn btn-danger' href='#' id='dataTableRemoveRow_"+cnt+ "'> " +
                 "<i class='halflings-icon white trash'></i> </a> </td>"
             ] ).draw( false );
 
             $('#dataTableRemoveRow_'+cnt).click( function () {
+
+                $(this).parent().parent().addClass('selected');
                 formAddTable.row('.selected').remove().draw( false );
             } );
+
 
             $('#dataTableUpdateRow_'+cnt).click( function () {
 
 
+                cur_id = $(this).attr("value");
                 $('#myModal').modal('show');
 
             } );
@@ -730,13 +735,6 @@
 
         });
 
-        $('#formAddTable tbody').on( 'click', 'tr', function () {
-
-
-            formAddTable.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-
-        } );
 
         $("#btn_formAdd_confirm").click(function(){
 
@@ -745,8 +743,10 @@
             var unitType = $("#selectError  option:selected").text();
 
 
+            $("#formAddTitle_"+cur_id).text(alertTitle);
+            $("#formAddType_"+cur_id).text(unitType);
+            $("#formAddRequired_"+cur_id).text(isRequired);
 
-            alert(alertTitle+" "+isRequired+" "+unitType);
 
             $('#myModal').modal('hide');
         });

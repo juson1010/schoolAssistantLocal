@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Repository
 public class BaseDaoHibImpl<T> implements BaseHibDao<T> {
     // DAO组件进行持久化操作底层依赖的SessionFactory组件
-   // private ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+    // private ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
     @Autowired
     protected SessionFactory sessionFactory ;
     protected int rowsCount;
@@ -26,11 +26,6 @@ public class BaseDaoHibImpl<T> implements BaseHibDao<T> {
     // spring 建议调用sessionFactory.getCurrentSession()方法得到方式
     // 还有sessionFactory.openSession()
     public Session getSession() {
-
-        if (sessionFactory == null){
-
-            sessionFactory = SpringSessionFactory.getSessionFactory();
-        }
 
         return sessionFactory.getCurrentSession();
     }
@@ -82,8 +77,8 @@ public class BaseDaoHibImpl<T> implements BaseHibDao<T> {
     }
 
     // 根据HQL语句查询实体
-    @SuppressWarnings("unchecked")
-    protected List<T> find(String hql) {
+    //@SuppressWarnings("unchecked")
+    public List<T> find(String hql) {
         return (List<T>) getSession().createQuery(hql).list();
     }
 

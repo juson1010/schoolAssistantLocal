@@ -8,6 +8,12 @@
     <constant name="struts.ui.theme" value="simple" />
     <constant name="struts.devMode" value="true" />
 
+    <!-- 设置struts2文件上传最大值 -->
+    <constant name="struts.multipart.maxSize" value="209715200" />
+
+    <!-- 文件上传临时文件保存路径 -->
+    <constant name="struts.multipart.saveDir" value="repository"></constant>
+
     <package name="default" extends="struts-default">
         <interceptors>
             <interceptor name="authority"
@@ -39,6 +45,24 @@
             <result name="failure">/logfail.jsp</result>
         </action>
     </package>
+
+
+    <package name="resource" namespace="/ajax" extends="json-default">
+        <action name="*Resource" class="controller.ResourceAction"
+                method="{1}">
+
+            <result type="json">
+
+                <param name="root">aaData</param>
+            </result>
+        </action>
+    </package>
+
+
+
+
+
+
 
     <!-- include file="example.xml"/> -->
 

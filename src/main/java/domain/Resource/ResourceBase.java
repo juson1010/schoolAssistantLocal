@@ -157,14 +157,6 @@ public class ResourceBase {
 		this.reliability = reliability;
 	}
 
-	public Integer getLike() {
-		return likes;
-	}
-
-	public void setLike(Integer likes) {
-		this.likes = likes;
-	}
-
 	public Integer getDislike() {
 		return dislike;
 	}
@@ -173,7 +165,9 @@ public class ResourceBase {
 		this.dislike = dislike;
 	}
 
+	public Integer getLikes() {return likes;}
 
+	public void setLikes(Integer likes) {this.likes = likes;}
 
 	public List<String> getComments() {
 		return comments;

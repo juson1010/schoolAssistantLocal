@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+<%--
+  Created by IntelliJ IDEA.
+  User: cqx
+  Date: 16/6/1
+  Time: 下午10:22
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
 
@@ -407,30 +414,40 @@
 
 
             <div class="row-fluid">
+                <div class="box blue span12">
+                    <div class="box-header">
+                        <h2><i class="halflings-icon white white hand-top"></i><span class="break"></span>Quick Buttons</h2>
+                    </div>
+                    <div class="box-content">
 
-                <div class="control-group">
+
+
+                        <div class="control-group">
 
                             <div class="controls">
-                                <div class="input-append span12" >
-                                    <span class="">
+                                <div class="input-append">
+                                    <span class="span5">
                                         <select  id="search_resource_type">
                                             <option value="form">表格</option>
                                             <option value="questionnaire">问卷</option>
                                             <option value="courseware">课件</option>
                                             <option value="ebook">电子书</option>
                                             <option value="paper">试卷</option>
-                                        </select>
-                                    </span>
-                                    <span class="">
-                                    <input id="search_resource_filename" size="16" type="text" placeholder="请输入资源名">
+                                        </select></span>
+                                    <span class="span7">
+                                    <input id="search_resource_filename" size="16" type="text">
                                         <button class="btn" type="button" id="search_resource_btn">查找</button>
                                         <button class="btn" id="resource_upload">资源上传</button>
                                     </span>
-
-
                                 </div>
                             </div>
                         </div>
+
+
+
+
+                    </div>
+                </div><!--/span-->
 
             </div><!--/row-->
             <div class="row-fluid sortable">
@@ -557,22 +574,13 @@
         <button type="button" class="close" data-dismiss="modal">×</button>
         <h3 >资源上传</h3>
     </div>
-    <form class="form-horizontal" id="uploadResourceForm" action="ajax/uploadResource.action" method="post"
-          enctype="multipart/form-data" >
     <div class="modal-body">
-
-
-            <div class="control-group">
-                <label class="control-label"  >文件名</label>
-                <div class="controls">
-                    <input class="input-xlarge focused" placeholder="请输入" id="uploadFormFilename" type="text" name="filename">
-                </div>
-            </div>
+        <form class="form-horizontal" >
 
             <div class="control-group">
                 <label class="control-label">资源类型</label>
                 <div class="controls">
-                    <select  name="description" id="uploadFormDescription">
+                    <select  >
                         <option value="form">表格</option>
                         <option value="questionnaire">问卷</option>
                         <option value="courseware">课件</option>
@@ -584,28 +592,22 @@
             <div class="control-group">
                 <label class="control-label" >积分</label>
                 <div class="controls">
-                    <input class="input-xlarge focused" type="text" id="uploadFormPoints"  value="0">
+                    <input class="input-xlarge focused" placeholder="0" type="text">
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label">资源文件</label>
                 <div class="controls">
-                    <input type="file" name="upload" id="uploadFormUpload">
+                    <input type="file">
                 </div>
             </div>
-
-        <div class="progress">
-            <div class="bar"></div >
-            <div class="percent">0%</div >
-        </div>
+        </form>
     </div>
     <div class="modal-footer">
         <a href="#" class="btn" data-dismiss="modal">取消</a>
-        <!--<a href="#" class="btn btn-primary " id="fileUploadConfirm">上传</a>-->
-        <input type="submit" class="btn btn-primary " id="fileUploadConfirm" value="上传"/>
+        <a href="#" class="btn btn-primary " id="fileUploadConfirm">上传</a>
     </div>
-    </form>
 </div>
 
 
@@ -811,7 +813,7 @@
 
 <script src="js/custom.js"></script>
 
-<script src="js/jquery.form.min.js"></script>
+
 <script type="text/javascript">
 
 
@@ -822,6 +824,7 @@
     $(document).ready(function(){
 
 
+
         $("#search_resource_btn").click(function(){
 
 
@@ -829,18 +832,17 @@
             var resource_filename = $("#search_resource_filename").val();
 
 
-
-            var url = "ajax/"+resource_type+"SearchResource.action?filename="+resource_filename;
+            var url = "ajax/"+resource_type+"SearchResource.action";
 
             $.ajax({
                 type: "post",
                 url: url,
                 dataType: 'json',
-
                 async:true,
                 success: function(data){
 
                     $("#search_datatable").DataTable().clear();
+
                     var xx = eval(data);
                     for (var i = 0;i<xx.length;i++){
 
@@ -852,7 +854,7 @@
                             "<td class='center'> " +
                             "<a class='btn btn-success' href='#'>"+
                             "<i class='halflings-icon white zoom-in'></i></a>"+
-                            "<a class='btn btn-danger' href='ajax/downloadResource.action?downloadFileUrl="+xx[i].url+"'> <i class='halflings-icon white download'></i></a>"
+                            "<a class='btn btn-danger' href='#'> <i class='halflings-icon white download'></i></a>"
                         ] ).draw( false );
 
                     }
@@ -866,111 +868,7 @@
 
 
 
-        $("#resource_upload").click(function(){
-
-
-            $("#fileUploadModel").modal("show");
-
-
-        });
-
-        $("#fileUploadConfirm").click(function(){
-
-
-
-            var filename =  $("#uploadFormFilename");
-            var uploadFile =  $("#uploadFormUpload");
-
-            if (filename.val == "" || uploadFile.val() == "" ){
-
-                alert("请将表单填写完整");
-                return;
-            }
-
-
-
-
-
-            var bar = $('.bar');
-            var percent = $('.percent');
-            var status = $('#status');
-
-            $("#uploadResourceForm").ajaxForm({
-                beforeSend: function() {
-                    status.empty();
-                    var percentVal = '0%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-                },
-                uploadProgress: function(event, position, total, percentComplete) {
-                    var percentVal = percentComplete + '%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-                },
-                success: function() {
-                    var percentVal = '100%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-//                    alert("success");
-
-
-
-
-
-                    $("#fileUploadModel").modal("hide");
-
-
-                    $("#uploadFormFilename").val("");
-                    $("#uploadFormDescription").get(0).selectedIndex=0;
-                    $("#uploadFormPoints").val("");
-
-                    var file = $("#uploadFormUpload")
-                    file.after(file.clone().val(""));
-                    file.remove();
-
-                    bar.width('0%')
-                    percent.html('0%');
-                },
-                complete: function(xhr) {
-                    status.html(xhr.responseText);
-                },
-                error:function(){
-//                    alert("fail");
-                    $("#fileUploadModel").modal("hide");
-                }
-
-            });
-
-
-
-
-
-//            $.ajax({
-//                type: "post",
-//                url: "ajax/uploadResource.action",
-//                dataType: 'json',
-//                data:$("#uploadResourceForm").serialize(),
-//                async:true,
-//                success: function(data){
-//
-//
-//                    alert("success");
-//
-//                    $("#fileUploadModel").modal("hide");
-//
-//                },
-//                error:function(result){
-//                    alert("fail "+result);
-//                    $("#fileUploadModel").modal("hide");
-//                }
-//            });
-//
-        });
-
-
     });
-
-
 
 
 
@@ -984,4 +882,5 @@
 
 </body>
 </html>
+
 

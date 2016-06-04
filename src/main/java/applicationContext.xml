@@ -70,7 +70,8 @@
 			<list>
 				<value>domain.User.User</value>
 				<value>domain.User.UserInfo</value>
-
+				<value>domain.Resource.EBook</value>
+				<value>domain.Comment</value>
 
 			</list>
 		</property>
@@ -109,6 +110,17 @@
 		<property name="userDao" ref="userDao"/>
 		<property name="userInfoDao" ref="userInfoDao"/>
 	</bean>
+
+	<bean id="resourceService" class="service.ResourceServiceImpl" >
+		<property name="userDao" ref="userDao"/>
+		<property name="eBookDao" ref="eBookDao"/>
+		<property name="paperDao" ref="paperDao" />
+		<property name="coursewareDao" ref="coursewareDao" />
+		<property name="questionnaireDao" ref="questionnaireDao" />
+	</bean>
+
+
+
 
 
 

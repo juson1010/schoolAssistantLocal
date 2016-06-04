@@ -1,4 +1,12 @@
-<!DOCTYPE html>
+<%--
+  Created by IntelliJ IDEA.
+  User: cqx
+  Date: 16/6/1
+  Time: 下午10:22
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html lang="en">
 <head>
 
@@ -407,42 +415,57 @@
 
 
             <div class="row-fluid">
-
-                <div class="control-group">
-
-                            <div class="controls">
-                                <div class="input-append span12" >
-                                    <span class="">
-                                        <select  id="search_resource_type">
-                                            <option value="form">表格</option>
-                                            <option value="questionnaire">问卷</option>
-                                            <option value="courseware">课件</option>
-                                            <option value="ebook">电子书</option>
-                                            <option value="paper">试卷</option>
-                                        </select>
-                                    </span>
-                                    <span class="">
-                                    <input id="search_resource_filename" size="16" type="text" placeholder="请输入资源名">
-                                        <button class="btn" type="button" id="search_resource_btn">查找</button>
-                                        <button class="btn" id="resource_upload">资源上传</button>
-                                    </span>
-
-
-                                </div>
-                            </div>
-                        </div>
-
-            </div><!--/row-->
-            <div class="row-fluid sortable">
-                <div class="box span12">
-                    <div class="box-header" data-original-title>
-                        <h2><i class="halflings-icon white user"></i><span class="break"></span>Members</h2>
+                <div class="box blue span12">
+                    <div class="box-header">
+                        <h2><i class="halflings-icon white white hand-top"></i><span class="break"></span>选择模块</h2>
                         <div class="box-icon">
-                            <a href="#" class="btn-setting"><i class="halflings-icon white wrench"></i></a>
                             <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
                         </div>
                     </div>
                     <div class="box-content">
+
+                        <a class="quick-button span2  search_btn" id="formSearch" value="form">
+                            <i class="icon-table"></i>
+                            <p>表格</p>
+                        </a>
+
+                        <a class="quick-button span2 search_btn" id="questionnaireSearch" value="questionnaire">
+                            <i class="icon-edit"></i>
+                            <p>问卷</p>
+                        </a>
+                        <a class="quick-button span2 search_btn" id="coursewareSearch" value="courseware">
+                            <i class="icon-print"></i>
+                            <p>课件</p>
+                        </a>
+                        <a class="quick-button span2 search_btn" id="ebookSearch" value="ebook">
+                            <i class="icon-book"></i>
+                            <p>电子书</p>
+                        </a>
+
+                        <a class="quick-button span2 search_btn" id="paperSearch" value="paper">
+                            <i class="icon-list-alt"></i>
+                            <p>试卷</p>
+                        </a>
+
+                        <a class="quick-button span2 " id="resource_upload">
+                            <i  class="icon-file"></i>
+                            <p>资源上传</p>
+                        </a>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div><!--/span-->
+
+            </div><!--/row-->
+            <div class="row-fluid " >
+                <div class="box span12 " >
+                    <div class="box-header" data-original-title>
+                        <h2><i class="halflings-icon white user"></i><span class="break"></span>资源查找</h2>
+                        <div class="box-icon">
+                            <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
+                        </div>
+                    </div>
+                    <div class="box-content" >
                         <table class="table table-striped table-bordered bootstrap-datatable datatable" id="search_datatable">
                             <thead>
                             <tr>
@@ -465,7 +488,7 @@
                                     <span class="label label-warning">Pending</span>
                                 </td>
                                 <td class="center">
-                                    <a class="btn btn-success resource_comment" href="#" >
+                                    <a class="btn btn-success" href="#">
                                         <i class="halflings-icon white zoom-in"></i>
                                     </a>
 
@@ -552,188 +575,7 @@
     </div>
 </div>
 
-<div class="modal hide fade" id="fileUploadModel">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3 >资源上传</h3>
-    </div>
-    <form class="form-horizontal" id="uploadResourceForm" action="ajax/uploadResource.action" method="post"
-          enctype="multipart/form-data" >
-    <div class="modal-body">
 
-
-            <div class="control-group">
-                <label class="control-label"  >文件名</label>
-                <div class="controls">
-                    <input class="input-xlarge focused" placeholder="请输入" id="uploadFormFilename" type="text" name="filename">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">资源类型</label>
-                <div class="controls">
-                    <select  name="description" id="uploadFormDescription">
-                        <option value="form">表格</option>
-                        <option value="questionnaire">问卷</option>
-                        <option value="courseware">课件</option>
-                        <option value="ebook">电子书</option>
-                        <option value="paper">试卷</option>
-                    </select>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" >积分</label>
-                <div class="controls">
-                    <input class="input-xlarge focused" type="text" id="uploadFormPoints"  value="0">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">资源文件</label>
-                <div class="controls">
-                    <input type="file" name="upload" id="uploadFormUpload">
-                </div>
-            </div>
-
-        <div class="progress">
-            <div class="bar"></div >
-            <div class="percent">0%</div >
-        </div>
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">取消</a>
-        <!--<a href="#" class="btn btn-primary " id="fileUploadConfirm">上传</a>-->
-        <input type="submit" class="btn btn-primary " id="fileUploadConfirm" value="上传"/>
-    </div>
-    </form>
-</div>
-
-
-
-<div class="modal hide fade " id="resourceCommentModel">
-    <div class="box black span6 noMargin" onTablet="span6" onDesktop="span6">
-        <div class="box-header">
-            <h2><i class="halflings-icon white list"></i><span class="break"></span>Support tickets Metro</h2>
-            <div class="box-icon">
-                <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-                <a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-            </div>
-        </div>
-        <div class="box-content">
-            <ul class="tickets metro">
-                <li class="ticket blue">
-                    <a href="#">
-
-
-									<span class="content">
-										<span class="avatar"><img src="img/avatar.jpg" alt="Avatar"></span>
-										<span class="name">Dennis Ji</span>
-										<span class="date">Jul 25, 2012 11:09</span>
-										<span class="date">aaasdasdasdadjkhhashdkjahdasjkhdakjhdk
-										asjdhkjahdjkahdhjkahdjhjakdsasd
-										asjdhkahdjhajkhdjhajhdjahjhdjajdh
-										asdjkahdkhjahdjahdjkakhdjkahkdhjkashdkasd
-										askjdhjkahdajkdhjkad
-										ashjdjadakjdajkhduuwhquidiqye
-										asjkdhajkhdjhajkhdjhajkdh
-										qwiheuhquihekasjdkahkd</span>
-									</span>
-                    </a>
-                </li>
-                <li class="ticket yellow">
-                    <a href="#">
-									<span class="header">
-										<span class="title">Mobile App Problem</span>
-										<span class="number">[ #199277 ]</span>
-									</span>
-									<span class="content">
-										<span class="avatar"><img src="img/avatar.jpg" alt="Avatar"></span>
-										<span class="name">Dennis Ji</span>
-										<span class="priority">[ Normal priority ]</span>
-										<span class="status">Status: [ Pending ]</span>
-										<span class="date">Jul 25, 2012 11:09</span>
-									</span>
-                    </a>
-                </li>
-                <li class="ticket red">
-                    <a href="#">
-									<span class="header">
-										<span class="title">ARM issue</span>
-										<span class="number">[ #199276 ]</span>
-									</span>
-									<span class="content">
-										<span class="avatar"><img src="img/avatar.jpg" alt="Avatar"></span>
-										<span class="name">Dennis Ji</span>
-										<span class="priority">[ High priority ]</span>
-										<span class="status">Status: [ In progress ]</span>
-										<span class="date">Jul 25, 2012 11:09</span>
-									</span>
-                    </a>
-                </li>
-                <li class="ticket green">
-                    <a href="#">
-									<span class="header">
-										<span class="title">IE7 problem</span>
-										<span class="number">[ #199275 ]</span>
-									</span>
-									<span class="content">
-										<span class="avatar"><img src="img/avatar.jpg" alt="Avatar"></span>
-										<span class="name">Dennis Ji</span>
-										<span class="priority">[ Low priority ]</span>
-										<span class="status">Status: [ Rejected ]</span>
-										<span class="date">Jul 25, 2012 11:09</span>
-									</span>
-                    </a>
-                </li>
-                <li class="ticket blue">
-                    <a href="#">
-									<span class="header">
-										<span class="title">Server unavaible</span>
-										<span class="number">[ #199274 ]</span>
-									</span>
-									<span class="content">
-										<span class="avatar"><img src="img/avatar.jpg" alt="Avatar"></span>
-										<span class="name">Dennis Ji</span>
-										<span class="priority">[ Low priority ]</span>
-										<span class="status">Status: [ Complete ]</span>
-										<span class="date">Jul 25, 2012 11:09</span>
-									</span>
-                    </a>
-                </li>
-                <li class="ticket yellow">
-                    <a href="#">
-									<span class="header">
-										<span class="title">Mobile App Problem</span>
-										<span class="number">[ #199273 ]</span>
-									</span>
-									<span class="content">
-										<span class="avatar"><img src="img/avatar.jpg" alt="Avatar"></span>
-										<span class="name">Dennis Ji</span>
-										<span class="priority">[ Normal priority ]</span>
-										<span class="status">Status: [ Pending ]</span>
-										<span class="date">Jul 25, 2012 11:09</span>
-									</span>
-                    </a>
-                </li>
-                <li class="ticket red">
-                    <a href="#">
-									<span class="header">
-										<span class="title">ARM issue</span>
-										<span class="number">[ #199272 ]</span>
-									</span>
-									<span class="content">
-										<span class="avatar"><img src="img/avatar.jpg" alt="Avatar"></span>
-										<span class="name">Dennis Ji</span>
-										<span class="priority">[ High priority ]</span>
-										<span class="status">Status: [ In progress ]</span>
-										<span class="date">Jul 25, 2012 11:09</span>
-									</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div><!--/span-->
-</div>
 
 <div class="common-modal modal fade" id="common-Modal1" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-content">
@@ -811,166 +653,93 @@
 
 <script src="js/custom.js"></script>
 
-<script src="js/jquery.form.min.js"></script>
+
 <script type="text/javascript">
-
-
-
-
 
 
     $(document).ready(function(){
 
 
-        $("#search_resource_btn").click(function(){
+        var searchDataTable = $("#search_datatable");
+
+        $(".search_btn").click(function(){
+
+            var resource_type =  $(this).attr("value");
+
+            $("#search_datatable").dataTable({
 
 
-            var resource_type = $("#search_resource_type  option:selected").attr("value");
-            var resource_filename = $("#search_resource_filename").val();
 
-
-
-            var url = "ajax/"+resource_type+"SearchResource.action?filename="+resource_filename;
-
-            $.ajax({
-                type: "post",
-                url: url,
-                dataType: 'json',
-
-                async:true,
-                success: function(data){
-
-                    $("#search_datatable").DataTable().clear();
-                    var xx = eval(data);
-                    for (var i = 0;i<xx.length;i++){
-
-                        $("#search_datatable").DataTable().row.add( [
-                            "<td ><span class='resource_name' > " +xx[i].name +"</span></td>",
-                            "<td ><span class='resource_uploadDate' > " +xx[i].uploadDate+" </span></td>",
-                            "<td ><span class='resource_upload_user' >"+xx[i].upload_user+"</span></td>",
-                            "<td ><span class='resource_reliablity' >"+xx[i].reliablity+"</span></td>",
-                            "<td class='center'> " +
-                            "<a class='btn btn-success' href='#'>"+
-                            "<i class='halflings-icon white zoom-in'></i></a>"+
-                            "<a class='btn btn-danger' href='ajax/downloadResource.action?downloadFileUrl="+xx[i].url+"'> <i class='halflings-icon white download'></i></a>"
-                        ] ).draw( false );
-
-                    }
+                "sAjaxSource":"ajax/"+resource_type+"SearchResource.action",
+//                'iDisplayLength': 10,
+                "sPaginationType":"full_numbers",
+                "serverSide": true,
+                'bPaginate': true,
+                "bLengthChange": false,
+                "bDestroy":true,
+                "sInfo":"_TOTAL_ entries to show (_START_ to _END_)",
+                "oLanguage": {
+                    "sZeroRecords": "NO Records for Table",
+                    "sEmptyTable": "NO Records for Table",
                 },
-                error:function(result){
-                    alert("fail "+result);
-                }
-            });
-        });
+                "bScrollCollapse":true,
+                "columns": [
+                    {"data":"name" },
+                    {"data":"uploadDate"},
+                    {"data":"upload_user"},
+                    {"data":"reliablity"},
+                    {"defaultContent":
+                    "<a class='btn btn-success' href='#'>"+
+                    "<i class='halflings-icon white zoom-in'></i></a>"+
+                    "<a class='btn btn-danger' href='#'> <i class='halflings-icon white download'></i></a>"}
+                ],
 
+
+
+                "fnServerData": function (sUrl, aoData, fnCallback) {
+
+
+
+                    $.ajax({
+                        type: "post",
+                        url: sUrl,
+                        dataType: 'json',
+                        data:{"aoData":JSON.stringify(aoData)},
+                        async:true,
+                        success: function(result){
+//                            alert("success "+result);
+                            fnCallback(result);
+
+                            alert("done!?");
+                        },
+                        error:function(result){
+                            alert("fail "+result);
+                        }
+                    });
+                }
+
+
+            });
+
+
+
+
+        });
 
 
 
         $("#resource_upload").click(function(){
 
 
-            $("#fileUploadModel").modal("show");
-
 
         });
 
-        $("#fileUploadConfirm").click(function(){
 
 
 
-            var filename =  $("#uploadFormFilename");
-            var uploadFile =  $("#uploadFormUpload");
-
-            if (filename.val == "" || uploadFile.val() == "" ){
-
-                alert("请将表单填写完整");
-                return;
-            }
-
-
-
-
-
-            var bar = $('.bar');
-            var percent = $('.percent');
-            var status = $('#status');
-
-            $("#uploadResourceForm").ajaxForm({
-                beforeSend: function() {
-                    status.empty();
-                    var percentVal = '0%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-                },
-                uploadProgress: function(event, position, total, percentComplete) {
-                    var percentVal = percentComplete + '%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-                },
-                success: function() {
-                    var percentVal = '100%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-//                    alert("success");
-
-
-
-
-
-                    $("#fileUploadModel").modal("hide");
-
-
-                    $("#uploadFormFilename").val("");
-                    $("#uploadFormDescription").get(0).selectedIndex=0;
-                    $("#uploadFormPoints").val("");
-
-                    var file = $("#uploadFormUpload")
-                    file.after(file.clone().val(""));
-                    file.remove();
-
-                    bar.width('0%')
-                    percent.html('0%');
-                },
-                complete: function(xhr) {
-                    status.html(xhr.responseText);
-                },
-                error:function(){
-//                    alert("fail");
-                    $("#fileUploadModel").modal("hide");
-                }
-
-            });
-
-
-
-
-
-//            $.ajax({
-//                type: "post",
-//                url: "ajax/uploadResource.action",
-//                dataType: 'json',
-//                data:$("#uploadResourceForm").serialize(),
-//                async:true,
-//                success: function(data){
-//
-//
-//                    alert("success");
-//
-//                    $("#fileUploadModel").modal("hide");
-//
-//                },
-//                error:function(result){
-//                    alert("fail "+result);
-//                    $("#fileUploadModel").modal("hide");
-//                }
-//            });
-//
-        });
 
 
     });
-
-
 
 
 
