@@ -16,20 +16,16 @@ import service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Created by cqx on 2016/5/25.
  */
 public class ResourceAction extends ActionSupport{
-
-
-
-
 
 /*
 * resource search start
@@ -56,7 +52,7 @@ public class ResourceAction extends ActionSupport{
 
         List forms = select("Form");
         List<Map> resources = new ArrayList<Map>();
-        for (int i = 0;i<6;i++){
+        for (int i = 0;i<forms.size();i++){
 
             Form form = (Form) forms.get(i);
             Map obj = new HashMap<String,String>();
@@ -77,7 +73,7 @@ public class ResourceAction extends ActionSupport{
 
         List questionnaires = select("Questionnaire");
         List<Map> resources = new ArrayList<Map>();
-        for (int i = 0;i<6;i++){
+        for (int i = 0;i<questionnaires.size();i++){
 
             Questionnaire questionnaire = (Questionnaire) questionnaires.get(i);
             Map obj = new HashMap<String,String>();
@@ -98,7 +94,7 @@ public class ResourceAction extends ActionSupport{
 
         List coursewares = select("Courseware");
         List<Map> resources = new ArrayList<Map>();
-        for (int i = 0;i<6;i++){
+        for (int i = 0;i<coursewares.size();i++){
 
             Courseware courseware = (Courseware) coursewares.get(i);
             Map obj = new HashMap<String,String>();
@@ -142,7 +138,7 @@ public class ResourceAction extends ActionSupport{
 
         List papers = select("Paper");
         List<Map> resources = new ArrayList<Map>();
-        for (int i = 0;i<10;i++){
+        for (int i = 0;i<papers.size();i++){
 
             Paper paper = (Paper)papers.get(i);
             Map obj = new HashMap<String,String>();
@@ -162,27 +158,24 @@ public class ResourceAction extends ActionSupport{
     public List select(String tableName) throws Exception{
         System.out.println("enter ResourceAction select !");
         String hql = "from "+tableName+" as e where 1=1 ";
-        //System.out.println(filename+"666");
 
-        Map request = (Map)ActionContext.getContext().get("request");
-        filename = (String)request.get("filename");
+        ActionContext ctx = ActionContext.getContext();
+        HttpServletRequest request = (HttpServletRequest)ctx.get(ServletActionContext.HTTP_REQUEST);
+        request.setCharacterEncoding("UTF-8");
 
-        System.out.println(filename);
-        creatorUserId = (String)request.get("creatorUserId");
-        pointsFrom = (String)request.get("pointsFrom");
-        pointsTo = (String)request.get("pointsTo");
-        orderType = (String)request.get("orderType");
+        filename = new String(request.getParameter("filename").getBytes("iso-8859-1"),"utf-8");
+        creatorUserId = request.getParameter("creatorUserId");
+        pointsFrom = request.getParameter("pointsFrom");
+        pointsTo = request.getParameter("pointsTo");
+        orderType = request.getParameter("orderType");
 
         if (filename != null&&!filename.equals("")){//
-
             hql+=" and e.filename like'"+filename+"%' ";
         }
-
 
         if(creatorUserId!=null&&!creatorUserId.equals("")){
             hql+=" and e.creatorUserId = '"+creatorUserId+"' ";
         }
-
 
         if(pointsFrom != null&&!pointsFrom.equals("")){
             hql+=" and e.pointsFrom >= "+pointsFrom;
@@ -282,7 +275,7 @@ public class ResourceAction extends ActionSupport{
 
 
     /*
-    *  resource upload and download
+    *
     *
     * */
     //评论内容
@@ -303,7 +296,6 @@ public class ResourceAction extends ActionSupport{
     public void setCommentBody(String commentBody) {
         this.commentBody = commentBody;
     }
-
     @Autowired
     private UserService userService;
     public UserService getUserService() {
@@ -315,106 +307,35 @@ public class ResourceAction extends ActionSupport{
 
 
 
+/*
+*
+* upload start
+* */
 
-
-
-    private EBook eBook;
     private File upload;
     private String uploadContentType;
     private String uploadFileName;
     private String savePath = "resource";
-
     private String points;
-
-    public void setSavePath(String value)
-    {
-        if (value != null && !"".equals(value))
-            this.savePath = value;
-    }
+    public void setSavePath(String value) {if (value != null && !"".equals(value)) this.savePath = value;}
     // 获取上传文件的保存位置
-    private String getSavePath() throws Exception
-    {
-        return ServletActionContext.getServletContext()
-                .getRealPath(savePath);
-    }
+    private String getSavePath() throws Exception {return ServletActionContext.getServletContext()
+                .getRealPath(savePath);}
 
+    public void setUpload(File upload) {this.upload = upload;}
+    public File getUpload() {return (this.upload);}
 
+    public void setUploadContentType(String uploadContentType) {this.uploadContentType = uploadContentType;}
+    public String getUploadContentType() {return (this.uploadContentType);}
 
-    public EBook geteBook() {
-        return eBook;
-    }
-    public void seteBook(EBook eBook) {
-        this.eBook = eBook;
-    }
+    public void setUploadFileName(String uploadFileName) {this.uploadFileName = uploadFileName;}
+    public String getUploadFileName() {return (this.uploadFileName);}
 
-
-
-
-    // upload的setter和getter方法
-    public void setUpload(File upload)
-    {
-        this.upload = upload;
-    }
-    public File getUpload()
-    {
-        return (this.upload);
-    }
-
-    // uploadContentType的setter和getter方法
-    public void setUploadContentType(String uploadContentType)
-    {
-        this.uploadContentType = uploadContentType;
-    }
-    public String getUploadContentType()
-    {
-        return (this.uploadContentType);
-    }
-
-    // uploadFileName的setter和getter方法
-    public void setUploadFileName(String uploadFileName)
-    {
-        this.uploadFileName = uploadFileName;
-    }
-    public String getUploadFileName()
-    {
-        return (this.uploadFileName);
-    }
-
-    public String getPoints() {
-        return points;
-    }
+    public String getPoints() {return points;}
 
     public void setPoints(String points) {
         this.points = points;
     }
-
-    private String inputPath;
-    // inputPath的setter方法
-    public void setInputPath(String value)
-    {
-        inputPath = value;
-    }
-
-
-    public String getInputPath() {
-        return inputPath;
-    }
-
-    /*
-    定义一个返回InputStream的方法，
-    该方法将作为被下载文件的入口，
-    且需要配置stream类型结果时指定inputName参数，
-    inputName参数的值就是方法去掉get前缀、首字母小写的字符串
-    */
-    //download function
-    public InputStream getTargetFile() throws Exception
-    {
-        // ServletContext提供getResourceAsStream()方法
-        // 返回指定文件对应的输入流
-        return ServletActionContext.getServletContext()
-                .getResourceAsStream(inputPath);
-    }
-
 
     //upload function
     public String upload() throws Exception {
@@ -424,7 +345,6 @@ public class ResourceAction extends ActionSupport{
         ActionContext ctx = ActionContext.getContext();
         HttpServletRequest request = (HttpServletRequest)ctx.get(ServletActionContext.HTTP_REQUEST);
         request.setCharacterEncoding("UTF-8");
-        EBook eBook=new EBook();
         FileOutputStream fos = new FileOutputStream(getSavePath()
                 + "-" + getUploadFileName());
         FileInputStream fis = new FileInputStream(getUpload());
@@ -441,44 +361,76 @@ public class ResourceAction extends ActionSupport{
 
         System.out.println("well now ");
         fos.close();
-        Date rdate=new Date();
-        //String sdate;
-        //sdate=(new SimpleDateFormat("yyyy-MM-dd")).format(rdate);
+
+
+
+        if (description.equals("form")){
+            saveFileToDb(new Form(),ResourceType.ResourceType_FORM);
+
+        }else if(description.equals("questionnaire")){
+            saveFileToDb(new Questionnaire(),ResourceType.ResourceType_QUESTIONNAIRE);
+        }else if (description.equals("ebook")){
+            saveFileToDb(new EBook(),ResourceType.ResourceType_EBOOK);
+        }else if (description.equals("paper")){
+            saveFileToDb(new Paper(),ResourceType.ResourceType_PAPER);
+
+        }else if (description.equals("courseware")){
+            saveFileToDb(new Courseware(),ResourceType.ResourceType_COURSEWARE);
+
+        }
+
+        return "success";
+    }
+    public void saveFileToDb(ResourceBase resourceBase,ResourceType resourceType) throws  Exception{
+
+
+
         String url=getSavePath()
                 + "-" + getUploadFileName();
-        eBook.setCreateTime(rdate.toString());
+
+        java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String s = format1.format(new Date());
+        resourceBase.setCreateTime(s);
         //这个属性需要修改
-        eBook.setCreatorUserId("1");
-        eBook.setDescription(description);
-        eBook.setDislike(0);
-        eBook.setDownloads(0);
-        eBook.setFileSize(upload.length());
-        eBook.setFilename(filename);
-        eBook.setLikes(0);
+        resourceBase.setCreatorUserId("1");
+        resourceBase.setDescription(description);
+        resourceBase.setDislike(0);
+        resourceBase.setDownloads(0);
+        resourceBase.setFileSize(upload.length());
+        resourceBase.setFilename(filename);
+        resourceBase.setLikes(0);
         //这个属性需要修改
-        eBook.setMd5("test");
-        eBook.setPoints(0);
+        resourceBase.setMd5("test");
+        resourceBase.setPoints(0);
         if (points != null)
-            eBook.setPoints(Integer.parseInt(points));
-        eBook.setReliability(0);
-        eBook.setTypeOfResourceType(ResourceType.ResourceType_EBOOK);
-        eBook.setUrl(url);
+            resourceBase.setPoints(Integer.parseInt(points));
+        resourceBase.setReliability(0);
+        resourceBase.setTypeOfResourceType(ResourceType.ResourceType_EBOOK);
+        resourceBase.setUrl(url);
         //这个属性需要修改
-        eBook.setTypeOfEBookType("lishi");
+//        eBook.setTypeOfEBookType("lishi");
 
         System.out.println("url now is "+url);
 
-        resourceService.createResource(eBook, ResourceType.ResourceType_EBOOK);
-        return "success";
+        resourceService.createResource(resourceBase, resourceType);
     }
 
+    /*
+    *
+    * upload end
+    *
+    * */
 
 
+    /*
+    * download start
+    * */
     private String downloadFileUrl;
-
+    private String downloadResourceName;
     public String getDownloadFileUrl() {return downloadFileUrl;}
     public void setDownloadFileUrl(String downloadFileUrl) {this.downloadFileUrl = downloadFileUrl;}
-
+    public String getDownloadResourceName() {return downloadResourceName;}
+    public void setDownloadResourceName(String downloadResourceName) {this.downloadResourceName = downloadResourceName;}
     public void download() throws Exception{
 
         System.out.println("enter download !");
@@ -486,10 +438,35 @@ public class ResourceAction extends ActionSupport{
         ActionContext ctx = ActionContext.getContext();
         HttpServletResponse response = (HttpServletResponse)ctx.get(ServletActionContext.HTTP_RESPONSE);
 
+
+        response.setContentType("text/plain");
+        response.setHeader("Location",downloadFileUrl);
+
+        String[] tmp = downloadFileUrl.split("\\.");
+
+        String fileType = "";
+        if (tmp.length == 2)
+            fileType = tmp[1];
+
+        response.setHeader("Content-Disposition", "attachment; filename=" + downloadResourceName+"."+fileType);
+        OutputStream outputStream = response.getOutputStream();
+        InputStream inputStream = new FileInputStream(downloadFileUrl);
+        byte[] buffer = new byte[1024];
+        int i = -1;
+        while ((i = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, i);
+        }
+        outputStream.flush();
+        outputStream.close();
 //        return new FileInputStream(downloadFileUrl);
 //        return ServletActionContext.getServletContext()
 //                .getResourceAsStream(downloadFileUrl);
     }
+
+   /*
+   * download end
+   * */
+
 
     //comment search
     public String search(){

@@ -6,6 +6,6 @@ package domain.Resource;
 public enum ResourceType {
 
     ResourceType_FORM,ResourceType_QUESTIONNAIRE,ResourceType_EBOOK,
-    ResourceType_COURSEWARE
+    ResourceType_COURSEWARE,ResourceType_PAPER
 
 }

@@ -34,6 +34,7 @@ public class User {
     @JoinTable(name="user_userInfo",
             joinColumns = @JoinColumn(name="user_id",referencedColumnName="user_id",unique=true),
             inverseJoinColumns=@JoinColumn(name="userInfo_id",referencedColumnName="userInfo_id"))
+    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     private UserInfo userInfo;
 
     /*token 有效日期*/

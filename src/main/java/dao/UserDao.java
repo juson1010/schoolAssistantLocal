@@ -8,4 +8,6 @@ import domain.User.User;
  */
 public interface UserDao extends BaseHibDao<User> {
     public boolean checkUser(String username,String password);
+
+    public boolean isExist(String username);
 }

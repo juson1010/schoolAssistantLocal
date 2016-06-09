@@ -12,9 +12,7 @@ import java.util.List;
 
 class UserAttendance{
 
-
     private User user;
-
     /*到达时间*/
     private Date arriveDate;
 

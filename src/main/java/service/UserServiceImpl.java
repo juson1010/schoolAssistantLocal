@@ -57,6 +57,9 @@ public class UserServiceImpl implements UserService {
 
     public boolean updateUser(User user) {
 
+        if (user.getUserInfo().getId() == null){
+            userInfoDao.save(user.getUserInfo());
+        }
         userDao.update(user);
         return true;
     }
@@ -74,6 +77,15 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    public User getUserByUsername(String username){
+
+        String hql = "from User where 1=1 and username ='"+username+"'";
+        List list = userDao.find(hql);
+        User user = null;
+        if (list.size()>0) user =(User) list.get(0);
+
+        return user;
+    }
 
     public List getAllUsers(String school, String academy) {
         return null;
@@ -118,15 +130,9 @@ public class UserServiceImpl implements UserService {
     }
 
 
-//	public UserInfoDao getUserInfoDao() {
-//		return userInfoDao;
-//	}
-//
-//
-//	public void setUserInfoDao(UserInfoDao userInfoDao) {
-//		this.userInfoDao = userInfoDao;
-//	}
-//
+    public boolean isExist(String username){
+        return userDao.isExist(username);
+    }
 
 }
 

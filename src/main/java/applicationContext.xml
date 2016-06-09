@@ -72,7 +72,11 @@
 				<value>domain.User.UserInfo</value>
 				<value>domain.Resource.EBook</value>
 				<value>domain.Comment</value>
-
+				<value>domain.Questionnaire.Questionnaire</value>
+				<value>domain.Resource.Paper</value>
+				<value>domain.Resource.Courseware</value>
+				<value>domain.Form.Form</value>
+				<value>domain.Unit</value>
 			</list>
 		</property>
 	</bean>
@@ -103,6 +107,7 @@
 		  parent="daoTemplate" />
 	<bean id="userInfoDao" class="dao.UserInfoDaoHibImpl"
 		  parent="daoTemplate" />
+
 
 	<!-- Service相关 -->
 

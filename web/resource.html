@@ -39,7 +39,36 @@
 
 
 
+<script type="text/javascript">
+    function confirm(){
+        var filename = $("#uploadFormFilename");
+        var uploadFile = $("#uploadFormUpload");
 
+        if (filename.val == "" || uploadFile.val() == "") {
+
+            alert("请将表单填写完整");
+            return false;
+        }else {
+            return true;
+        }
+    }
+    function clsUploadForm(){
+
+        $("#uploadFormFilename").val("");
+        $("#uploadFormDescription").get(0).selectedIndex = 0;
+        $("#uploadFormPoints").val("");
+
+        $("#uploadFormUploadDiv").empty();
+        $("#uploadFormUploadDiv").addClass("controls");
+        $("#uploadFormUploadDiv").append("<input type='file' name='upload' id='uploadFormUpload'>");
+
+
+//        $("#uploadFormUpload").val("");
+//        $("#uploadFormUpload").attr("value","");
+
+
+    }
+</script>
 </head>
 
 <body>
@@ -436,7 +465,7 @@
             <div class="row-fluid sortable">
                 <div class="box span12">
                     <div class="box-header" data-original-title>
-                        <h2><i class="halflings-icon white user"></i><span class="break"></span>Members</h2>
+                        <h2><i class="halflings-icon white user"></i><span class="break"></span>资源查找</h2>
                         <div class="box-icon">
                             <a href="#" class="btn-setting"><i class="halflings-icon white wrench"></i></a>
                             <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
@@ -454,8 +483,6 @@
                             </tr>
                             </thead>
                             <tbody>
-
-
 
                             <tr>
                                 <td>Dennis Ji</td>
@@ -476,7 +503,6 @@
 
                                 </td>
                             </tr>
-
 
                             </tbody>
                         </table>
@@ -558,7 +584,7 @@
         <h3 >资源上传</h3>
     </div>
     <form class="form-horizontal" id="uploadResourceForm" action="ajax/uploadResource.action" method="post"
-          enctype="multipart/form-data" >
+          enctype="multipart/form-data" onSubmit="return confirm();"  >
     <div class="modal-body">
 
 
@@ -590,7 +616,7 @@
 
             <div class="control-group">
                 <label class="control-label">资源文件</label>
-                <div class="controls">
+                <div class="controls" id="uploadFormUploadDiv">
                     <input type="file" name="upload" id="uploadFormUpload">
                 </div>
             </div>
@@ -603,12 +629,10 @@
     <div class="modal-footer">
         <a href="#" class="btn" data-dismiss="modal">取消</a>
         <!--<a href="#" class="btn btn-primary " id="fileUploadConfirm">上传</a>-->
-        <input type="submit" class="btn btn-primary " id="fileUploadConfirm" value="上传"/>
+        <input type="submit" class="btn btn-primary " id="fileUploadConfirm" value="上传" />
     </div>
     </form>
 </div>
-
-
 
 <div class="modal hide fade " id="resourceCommentModel">
     <div class="box black span6 noMargin" onTablet="span6" onDesktop="span6">
@@ -824,13 +848,10 @@
 
         $("#search_resource_btn").click(function(){
 
-
             var resource_type = $("#search_resource_type  option:selected").attr("value");
             var resource_filename = $("#search_resource_filename").val();
 
-
-
-            var url = "ajax/"+resource_type+"SearchResource.action?filename="+resource_filename;
+            var url = "ajax/"+resource_type+"SearchResource.action?filename="+encodeURI(resource_filename);
 
             $.ajax({
                 type: "post",
@@ -852,7 +873,7 @@
                             "<td class='center'> " +
                             "<a class='btn btn-success' href='#'>"+
                             "<i class='halflings-icon white zoom-in'></i></a>"+
-                            "<a class='btn btn-danger' href='ajax/downloadResource.action?downloadFileUrl="+xx[i].url+"'> <i class='halflings-icon white download'></i></a>"
+                            "<a class='btn btn-danger' href='ajax/downloadResource.action?downloadFileUrl="+xx[i].url+"&downloadResourceName="+xx[i].name+"'> <i class='halflings-icon white download'></i></a>"
                         ] ).draw( false );
 
                     }
@@ -862,111 +883,67 @@
                 }
             });
         });
-
-
-
-
         $("#resource_upload").click(function(){
-
-
+            clsUploadForm();
             $("#fileUploadModel").modal("show");
-
-
         });
+
+
 
         $("#fileUploadConfirm").click(function(){
 
 
-
-            var filename =  $("#uploadFormFilename");
-            var uploadFile =  $("#uploadFormUpload");
-
-            if (filename.val == "" || uploadFile.val() == "" ){
-
-                alert("请将表单填写完整");
-                return;
-            }
+//            alert("filename "+filename +" uploadFile "+uploadFile);
 
 
+                var bar = $('.bar');
+                var percent = $('.percent');
+                var status = $('#status');
 
 
+                $("#uploadResourceForm").ajaxForm({
+                    beforeSend: function () {
+                        status.empty();
+                        var percentVal = '0%';
+                        bar.width(percentVal)
+                        percent.html(percentVal);
+                    },
+                    uploadProgress: function (event, position, total, percentComplete) {
+                        var percentVal = percentComplete + '%';
+                        bar.width(percentVal)
+                        percent.html(percentVal);
+                    },
+                    success: function () {
+                        var percentVal = '100%';
+                        bar.width(percentVal)
+                        percent.html(percentVal);
+                        //                    alert("success");
 
-            var bar = $('.bar');
-            var percent = $('.percent');
-            var status = $('#status');
-
-            $("#uploadResourceForm").ajaxForm({
-                beforeSend: function() {
-                    status.empty();
-                    var percentVal = '0%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-                },
-                uploadProgress: function(event, position, total, percentComplete) {
-                    var percentVal = percentComplete + '%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-                },
-                success: function() {
-                    var percentVal = '100%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-//                    alert("success");
+                        $("#fileUploadModel").modal("hide");
 
 
+                        bar.width('0%');
+                        percent.html('0%');
 
+                    },
+                    complete: function (xhr) {
+                        status.html(xhr.responseText);
+                    },
+                    error: function () {
+                        //                    alert("fail");
+                        $("#fileUploadModel").modal("hide");
+                        bar.width('0%');
+                        percent.html('0%');
 
+                    }
 
-                    $("#fileUploadModel").modal("hide");
-
-
-                    $("#uploadFormFilename").val("");
-                    $("#uploadFormDescription").get(0).selectedIndex=0;
-                    $("#uploadFormPoints").val("");
-
-                    var file = $("#uploadFormUpload")
-                    file.after(file.clone().val(""));
-                    file.remove();
-
-                    bar.width('0%')
-                    percent.html('0%');
-                },
-                complete: function(xhr) {
-                    status.html(xhr.responseText);
-                },
-                error:function(){
-//                    alert("fail");
-                    $("#fileUploadModel").modal("hide");
-                }
-
-            });
+                });
 
 
 
-
-
-//            $.ajax({
-//                type: "post",
-//                url: "ajax/uploadResource.action",
-//                dataType: 'json',
-//                data:$("#uploadResourceForm").serialize(),
-//                async:true,
-//                success: function(data){
-//
-//
-//                    alert("success");
-//
-//                    $("#fileUploadModel").modal("hide");
-//
-//                },
-//                error:function(result){
-//                    alert("fail "+result);
-//                    $("#fileUploadModel").modal("hide");
-//                }
-//            });
-//
         });
 
+//        }
 
     });
 

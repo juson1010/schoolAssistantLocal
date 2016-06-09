@@ -14,5 +14,11 @@ public class UserDaoHibImpl extends BaseDaoHibImpl<User> implements UserDao {
         return true;
     }
 
+    public boolean isExist(String username){
+
+        String hql = "from User where username = '"+username+"'";
+
+        return (find(hql).size() == 1);
+    }
 
 }

@@ -20,6 +20,8 @@ public interface UserService {
 
     public User getUser(String userId);
 
+    public User getUserByUsername(String name);
+
     public List getAllUsers(String school, String academy);
     public List getUsers(String hql);
 
@@ -29,4 +31,6 @@ public interface UserService {
     public  void refreshToken(User user) ;
 
     public boolean checkUser(String username,String password);
+
+    public boolean isExist(String username);
 }

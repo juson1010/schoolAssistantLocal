@@ -1,28 +1,70 @@
 
 package domain;
 
-enum UnitType{
-	UnitType_OPTIONAL,UnitType_REQUIRED
-}
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OrderColumn;
+import javax.persistence.Table;
+@Entity
+@Table(name="Unit")
 public class Unit {
-	
-	/**/
+
+	//选项id
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@Column(name="unit_id")
 	private Integer index;
-	
-	/*��Ԫ���ͣ�ѡ��|����*/
+
+	//选项类型
+	@Enumerated(EnumType.STRING)
+	@Column(name="typeOfUnit")
 	private UnitType type;
-	/*��Ԫ����*/
-	private String content;
-	
-	/*��ʽ�޶���������ʽ����web������*/
+
+	//是否必填
+
+	@Column(name="isRequired")
+	private boolean isRequired;
+
+	//选项题目
+	@Column(name="unit_title")
+	private String title;
+
+	//选项内容
+	@ElementCollection(targetClass=String.class,fetch=FetchType.EAGER)
+	@CollectionTable(name="units_info",joinColumns=@JoinColumn(name="unit_id",nullable=true))
+	@Column(name="contents")
+	@OrderColumn(name="list_order")
+	private List<String> contents = new ArrayList<String>();
+
+
+	//正则表达式
+	@Column(name="regEx")
 	private String regEx;
 
-	
-	
-	
-	
+
+
+
+
 	public Unit(){
-		
+
+	}
+	public boolean isRequired() {
+		return isRequired;
+	}
+	public void setRequired(boolean isRequired) {
+		this.isRequired = isRequired;
 	}
 	public Integer getIndex() {
 		return index;
@@ -32,20 +74,14 @@ public class Unit {
 		this.index = index;
 	}
 
-	
+
 	public UnitType getType() {
 		return type;
 	}
 	public void setType(UnitType type) {
 		this.type = type;
 	}
-	public String getContent() {
-		return content;
-	}
 
-	public void setContent(String content) {
-		this.content = content;
-	}
 
 	public String getRegEx() {
 		return regEx;
@@ -54,7 +90,18 @@ public class Unit {
 	public void setRegEx(String regEx) {
 		this.regEx = regEx;
 	}
-	
-	
+
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public List<String> getContents() {
+		return contents;
+	}
+	public void setContents(List<String> contents) {
+		this.contents = contents;
+	}
 
 }

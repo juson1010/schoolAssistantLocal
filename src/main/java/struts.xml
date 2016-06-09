@@ -42,23 +42,73 @@
         <action name="login" class="controller.LoginAction"
                 method="login">   <!-- 用于处理登陆请求 -->
             <result name="success">/index.html</result>
-            <result name="failure">/logfail.jsp</result>
+            <result name="failure">/login.html</result>
+        </action>
+    </package>
+
+    <package name="register" namespace="/" extends="struts-default">
+        <action name="register" class="controller.RegisterAction"
+                method="register">   <!-- 用于处理注册请求 -->
+            <result name="success">/index.html</result>
+            <result name="failure">/register.html</result>
+        </action>
+
+
+    </package>
+
+
+    <package name="form" namespace="/" extends="struts-default">
+
+        <action name="*Form" class="controller.FormAction"
+                method="{1}">   <!-- 用于处理创建表格请求 -->
+            <result name="success">/index.html</result>
+            <result name="failure">/form2.html</result>
         </action>
     </package>
 
 
+    <package name="register_checkUserIsExist" namespace="/ajax" extends="json-default">
+        <action name="checkUserIsExist" class="controller.RegisterAction"
+                method="checkUserIsExist">   <!-- 用于处理用户名是否存在 -->
+            <result type="json">
+                <param name="root">usernameIsExist</param>
+            </result>
+        </action>
+
+        <action name="userInfoUpdate" class="controller.RegisterAction"
+                method="userInfo">   <!-- 用于处理用户修改个人信息请求 -->
+            <result type="json">
+                <param name="root">userInfoUpdateIfSuccess</param>
+            </result>
+        </action>
+
+        <action name="userInfoGetInfo" class="controller.RegisterAction"
+                method="userInfoGetInfo">   <!-- 用于得到用户信息 -->
+            <result type="json">
+                <param name="root">info</param>
+            </result>
+        </action>
+
+    </package>
     <package name="resource" namespace="/ajax" extends="json-default">
         <action name="*Resource" class="controller.ResourceAction"
                 method="{1}">
 
             <result type="json">
-
                 <param name="root">aaData</param>
             </result>
         </action>
     </package>
 
 
+    <!--<package name="form" namespace="/ajax" extends="json-default">-->
+        <!--<action name="*Form" class="controller.FormAction" method="{1}">-->
+
+            <!--<result type="json">-->
+                <!--<param name="root">createFormIsSucces</param>-->
+            <!--</result>-->
+        <!--</action>-->
+    <!--</package>-->
 
 
 

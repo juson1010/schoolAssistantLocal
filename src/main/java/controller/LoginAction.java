@@ -2,6 +2,7 @@ package controller;
 
 import java.util.Map;
 
+import domain.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import service.UserService;
@@ -39,10 +40,14 @@ public class LoginAction extends ActionSupport{
 
 //        UserService userService=new UserServiceImpl();
         boolean flag=userService.checkUser(username, password);
+
         System.out.println("!!!!!!!!!!! flag "+flag);
         if (flag) {
             Map session=ActionContext.getContext().getSession();
             session.put("username", username);
+            User user = userService.getUserByUsername(username);
+
+            session.put("user",user);
             System.out.println("return success!");
             return "success";
         }else {

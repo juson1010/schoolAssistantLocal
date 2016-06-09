@@ -66,24 +66,28 @@ public class UserTest {
 	 public void testFindAll() {
 
 
-		 System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		 User user = new User();
-		 user.setPassword("123");
-		 user.setUsername("admin01");
-		 userService.generateToken(user);
-		 UserInfo userInfo = new UserInfo();
-		 userInfo.setAcademy("rg");
-		 userInfo.setAge(22);
-		 userInfo.setEnrolmentDate(new Date(2013, 9, 1));
-		 userInfo.setInfoVisible(true);
-		 userInfo.setLabel("llllll哈");
+//		 System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//		 User user = new User();
+//		 user.setPassword("123");
+//		 user.setUsername("admin01");
+//		 userService.generateToken(user);
+//		 UserInfo userInfo = new UserInfo();
+//		 userInfo.setAcademy("rg");
+//		 userInfo.setAge(22);
+//		 userInfo.setEnrolmentDate(new Date(2013, 9, 1));
+//		 userInfo.setInfoVisible(true);
+//		 userInfo.setLabel("llllll哈");
+//
+//		 user.setUserInfo(userInfo);
+////        userService.createUser(user);
+////        userDao.save(user);
+////		 userInfoDao.save(userInfo);
+//		 userService.createUser(user);
+//		 System.out.println("done!");
 
-		 user.setUserInfo(userInfo);
-//        userService.createUser(user);
-//        userDao.save(user);
-//		 userInfoDao.save(userInfo);
-		 userService.createUser(user);
-		 System.out.println("done!");
+		 System.out.println("admin is +"+userService.isExist("admin02"));
+
+		 System.out.println("admin is +"+userService.isExist("admin0"));
 	    }
 
 

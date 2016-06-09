@@ -1,37 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9"><![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js"><!--<![endif]-->
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
-    <script type="text/javascript">
-
-
-
-            alert("s");
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Selectize.js Demo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-            var xx = {[{"name":"t0","upload_user":"u00","uploadDate":"2016-2-0","reliablity":"1-0"},{"name":"t1","upload_user":"u01","uploadDate":"2016-2-1","reliablity":"1-1"},{"name":"t2","upload_user":"u02","uploadDate":"2016-2-2","reliablity":"1-2"},{"name":"t3","upload_user":"u03","uploadDate":"2016-2-3","reliablity":"1-3"},{"name":"t4","upload_user":"u04","uploadDate":"2016-2-4","reliablity":"1-4"},{"name":"t5","upload_user":"u05","uploadDate":"2016-2-5","reliablity":"1-5"}]
-
-
-
-            var z = eval(xx);
-
-
-            alert("success "+z);
-
-            for (var i = 0; i< z.length;i++){
-
-                alert("name " + z[i].name + " upload " + z[i].uploadDate);
-
-            }
-
-
-
-    </script>
 </head>
 <body>
 
+<select id="select-beast" placeholder="Select a person...">
+    <option value="">Select a person...</option>
+    <option value="4">Thomas Edison</option>
+    <option value="1">Nikola</option>
+    <option value="3">Nikola Tesla</option>
+    <option value="5">Arnold Schwarzenegger</option>
+</select>
+
+
+
+
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/standalone/selectize.js"></script>
+<script src="js/index.js"></script>
+
+<script type="text/javascript">
+    $('#select-beast').selectize({
+        create: true,
+        sortField: {
+            field: 'text',
+            direction: 'asc'
+        },
+        dropdownParent: 'body'
+    });
+</script>
 </body>
 </html>

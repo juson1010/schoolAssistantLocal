@@ -1,9 +1,7 @@
 package domain.User;
 
 import javax.persistence.*;
-
 import java.util.Date;
-
 
 
 @Entity

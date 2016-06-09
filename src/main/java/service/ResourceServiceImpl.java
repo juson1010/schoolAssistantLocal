@@ -54,6 +54,8 @@ public class ResourceServiceImpl implements ResourceService {
 
                 questionnaireDao.save((Questionnaire) resource);
                 break;
+            case ResourceType_PAPER:
+                paperDao.save((Paper)resource);
         }
         return true;
 
@@ -85,6 +87,9 @@ public class ResourceServiceImpl implements ResourceService {
 
                 questionnaireDao.delete((Questionnaire) resource);
                 break;
+            case ResourceType_PAPER:
+                paperDao.delete((Paper)resource);
+                break;
         }
         return true;
 
@@ -111,6 +116,9 @@ public class ResourceServiceImpl implements ResourceService {
 
                 questionnaireDao.update((Questionnaire) resource);
                 break;
+            case ResourceType_PAPER:
+
+                paperDao.update((Paper) resource);
         }
         return true;
     }
@@ -141,6 +149,11 @@ public class ResourceServiceImpl implements ResourceService {
 
                 resourceBase =questionnaireDao.get(Questionnaire.class,id);
                 break;
+
+            case ResourceType_PAPER:
+
+                resourceBase = paperDao.get(Paper.class,id);
+                break;
         }
 
         return resourceBase;
@@ -166,6 +179,8 @@ public class ResourceServiceImpl implements ResourceService {
 
                 results =questionnaireDao.find(condition);
                 break;
+            case ResourceType_PAPER:
+                results = paperDao.find(condition);
         }
         return results;
     }

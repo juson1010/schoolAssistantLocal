@@ -23,6 +23,7 @@ public class EncodingFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse res,
                          FilterChain chain) throws IOException, ServletException {
+        System.out.println("enter encoding");
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         request.setCharacterEncoding("UTF-8");
