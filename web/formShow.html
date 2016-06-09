@@ -40,23 +40,6 @@
     <link rel="shortcut icon" href="img/favicon.ico">
     <!-- end: Favicon -->
 
-    <script type="text/javascript">
-
-        function confirm(){
-
-            var flag = document.getElementById("form_deadline").value;
-            var filename = document.getElementById("form_filename").value;
-            if (flag != null && flag != "" && filename != null && filename != ""){
-                return true;
-            }else{
-                alert("表格填写不完整!");
-                return false;
-            }
-
-        }
-
-    </script>
-
 
 </head>
 <body>
@@ -345,69 +328,29 @@
 
 
             <div class="row-fluid sortable">
-                <div class="box span12">
-                    <form id="form_create" action="createForm.action" method="post" onsubmit="return confirm();" >
-                        <div class="box-header" data-original-title>
 
-                            <div class="box-icon">
-
-                            <a href="#" class="btn-settting" id="form_add"><i class="halflings-icon white plus"></i></a>
-                            <a href="#" class="btn-setting"><i class="halflings-icon white wrench"></i></a>
-                            <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-                            </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="input-append">
+                            <input class="input-xlarge uneditable-input" id="shareUrl" size="16" type="text">
+                            <button class="btn blue" type="button" id="shareUrlBtn">分享表格</button>
                         </div>
-
-                        <div class="box-content">
-
-                            <div class="control-group">
-
-
-
-                                <div class="controls">
-                                    <div class="input-append">
-                                        <input placeholder="输入表格名" id="form_filename" name="filename" size="16" type="text">
-                                        <input placeholder="输入截止时间" id="form_deadline" name="form_deadline" size="16" type="text">
-                                        <button class="btn blue" type="button" id="form_btn_submit">提交表格</button>
-                                        <button class="btn" type="button" id="form_btn_preview">预览</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        <table class="table table-striped table-bordered bootstrap-datatable datatable display" id="formAddTable">
-                            <thead >
-                            <tr>
-                                <!--<th>序号	</th>-->
-                                <th>标题名</th>
-                                <th>单元类型</th>
-                                <th>是否必填</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-
-
-                                <tbody>
-
-
-
-
-
-                                </tbody>
-                        </table>
                     </div>
-                    </form>
-                </div><!--/span-->
+
+                </div>
 
             </div><!--/row-->
             <div class="row-fluid sortable">
                 <div class="box span12">
                     <div class="box-header" data-original-title>
-                        <h2 id="form_preview_title"><i class="halflings-icon white user"></i><span class="break"></span>预览</h2>
+                        <h2 id="form_title"><i class="halflings-icon white user"></i><span class="break"></span>title</h2>
                         <div class="box-icon">
+                            <a href="#" class="btn-setting" id="form_btn_refresh"><i class="halflings-icon white refresh"></i></a>
                             <a href="#" class="btn-setting"><i class="halflings-icon white wrench"></i></a>
                             <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
                         </div>
                     </div>
-                    <div class="box-content" id="form_preview_div">
+                    <div class="box-content" id="form_div">
 
                     </div>
                 </div><!--/span-->
@@ -422,35 +365,6 @@
     </div><!--/#content.span10-->
 </div><!--/fluid-row-->
 
-<div class="modal hide fade" id="myModal">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3 id="modal_unit_type">Settings</h3>
-    </div>
-    <div class="modal-body" style="height: 200px;">
-
-
-        <input type="hidden" value="CHECKBOX" id="modal_form_unit_index">
-        <div class="controls">
-            <div class="input-append">
-                <input placeholder="输入内容" id="modal_form_newContent"  size="16" type="text"><button class="btn blue" type="button" id="modal_form_newContentBtn">新增</button>
-            </div>
-        </div>
-
-
-        <div class="control-group" id="modal_form_newContentDiv">
-            <div class="controls" id="modal_form_newContentAppendDiv">
-
-
-            </div>
-        </div>
-
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">取消</a>
-        <a href="#" class="btn btn-primary" id="modal_btn_formAdd_confirm">保存</a>
-    </div>
-</div>
 
 <!-- start: JavaScript-->
 
@@ -509,121 +423,50 @@
 
 
 
-<script src="js/jquery.datetimepicker.full.js"></script>
-<script src="js/jquery.datetimepicker.js"></script>
+
 
 <script type="text/javascript">
     $(document).ready(function(){
 
 
-        var formAddTable = $("#formAddTable").DataTable();
 
-        cnt = 1;
-        var cur_id;
-        $("#form_add").click(function(){
-            formAddTable.row.add( [
-//                "<td ><span class='formAdd_id'>"+cnt+"</span></td>",
-                "<td >" +"<div style='display: none' id='formAdd_unit_contentAppend_"+cnt+"'></div>"+
-                "<input type='text' class='formAddTitle'   id='formAddTitle_"+cnt+ "' value='userrname' name='unitTitle'> " +" </input>" +
-                "<input type='hidden' name='formAddIndex' value='"+cnt+"' >"
-                +"</td>",
-                "<td >" +
-                "<select class='formAddType' id='formAddType_"+cnt+ "' name='unitType' index='"+cnt+"'> " +""
-                +"<option value='TEXT'>普通文本</option>"
-                +"<option value='CHECKBOX' >多选</option>"
-                +"<option value='SELECT'>单选</option>"
-                +"</select>"
-                +"</td>",
-                "<td >" +
-                "<select class='formAddRequired' id='formAddRequired_"+cnt+ "' name='unitIsRequired'> " +""
-                +"<option value='true'>必填</option>"
-                +"<option value='false'>选填</option>"
-                +"</select>"
-                +"</td>",
-                "<td class='center'> "
-                +"<a class='btn btn-success resource_comment' href='#' id='dataTableInfoRow_"+cnt+ "' index='"+cnt+"'> "
-                +"<i class='halflings-icon white zoom-in'> </i> </a>"
-                +"<a class='btn btn-danger' href='#' id='dataTableRemoveRow_"+cnt+ "'> " +
-                "<i class='halflings-icon white trash'></i> </a> </td>"
-
-
-
-            ] ).draw( false );
-
-
-
-            $("#formAddType_"+cnt).change(function(){
-
-                var value = $(this)[0].value;
-                var cur_id = $(this).attr("index");
-                if (value == "CHECKBOX"){
-
-                    //清空
-                    $("#modal_form_newContent").val("");
-                    $("#modal_form_newContentAppendDiv").empty();
-
-                    $("#dataTableInfoRow_"+cur_id).show();
-
-                    $("#modal_unit_type").text("多选");
-                    $("#modal_form_unit_index").val(cur_id);
-
-                    if ($("#form_unit_type_"+cur_id).val() == "多选")
-                        loadData(cur_id);//从当行获取数据(如果有)
-                    $('#myModal').modal('show');
-
-
-
-                }else if(value == "SELECT"){
-                    //清空
-                    $("#modal_form_newContent").val("");
-                    $("#modal_form_newContentAppendDiv").empty();
-
-                    $("#dataTableInfoRow_"+cur_id).show();
-
-                    $("#modal_unit_type").text("单选");
-                    $("#modal_form_unit_index").val(cur_id);
-
-                    if ($("#form_unit_type_"+cur_id).val() == "单选")
-                        loadData(cur_id);//从当行获取数据(如果有)
-
-                    $('#myModal').modal('show');
-
-                }else{
-
-                    $("#dataTableInfoRow_"+cur_id).hide();
-                }
-
-            });
-            $('#dataTableRemoveRow_'+cnt).click( function () {
-
-                $(this).parent().parent().addClass('selected');
-                formAddTable.row('.selected').remove().draw( false );
-            } );
-
-
-//            $("#form_preview_header").append("<td>username</td>");
-            $("#dataTableInfoRow_"+cnt).click(function(){
-
-                var cur_id = $(this).attr("index");
-                $("#modal_form_newContent").val("");
-                $("#modal_form_newContentAppendDiv").empty();
-                $("#modal_unit_type").text($("#form_unit_type_"+cur_id).val());
-
-                loadData(cur_id);
-                $("#myModal").modal('show');
-
-
-            });
-
-
-
-            cnt++;
-
-
+        $("#form_btn_refresh").click(function(){
 
         });
 
-        //预览按钮点击事件
+        function initAll(){
+
+            $.ajax({
+
+                type:"POST",
+                url:"ajax/shareForm.action",
+
+                success:function(data){
+
+                    alert(data);
+
+                }
+
+            });
+        }
+
+        function loadData(){
+
+            $.ajax({
+
+                type:"POST",
+                url:"ajax/shareForm.action",
+
+                success:function(data){
+
+                    alert(data);
+
+                }
+
+            });
+        }
+
+
         $("#form_btn_preview").click(function(){
 
 
@@ -650,97 +493,6 @@
 
 
         });
-
-        //提交表格按钮form_btn_submit
-        $("#form_btn_submit").click(function(){
-
-            $("#form_create").submit();
-
-        });
-
-
-        //截止时间插件
-        var d = new Date();
-        var vYear = d.getFullYear();
-        $("#form_deadline").datetimepicker({
-            lang:"zh-CN",           //语言选择中文
-            format:"Y-m-d",      //格式化日期
-//            timepicker:false,    //关闭时间选项
-            yearStart:vYear,     //设置最小年份
-//            yearEnd:vYear,        //设置最大年份
-            todayButton:false ,   //关闭选择今天按钮
-            minDate:new Date()
-        });
-
-
-
-        //modal里面新增的text框每获得焦点就清空文本
-        $("#modal_form_newContent").focus(function(){
-            $("#modal_form_newContent").val("");
-        });
-        //单元内新增按钮
-        var innerIndex = 1 ;
-        $("#modal_form_newContentBtn").click(function() {
-
-            var newContent = $("#modal_form_newContent").val();
-            var unitIndex = $("#modal_form_unit_index").val();
-            $("#modal_form_newContentAppendDiv").append(
-                    "<div class='controls'>"
-                    + "<div class='input-append'>"
-                    + "<input  class='modal_unit_content_" + unitIndex + "' id='modal_unit_content_" + unitIndex + "_" + innerIndex + "' size='16' type='text' value='" + newContent + "'>" +
-                    "<button class='btn red' type='button' id='modal_form_unit_delete_" + innerIndex + "' value='" + innerIndex + "'>删除</button>"
-                    + "</div> </div>");
-
-            $("#modal_form_unit_delete_" + innerIndex).click(function () {
-
-                $(this).parent().parent().remove();
-            });
-
-            innerIndex++;
-        });
-
-
-        //单元修改确认按钮
-        $("#modal_btn_formAdd_confirm").click(function(){
-
-            var index = $("#modal_form_unit_index").val();
-            var unittype = $("#modal_unit_type").text();
-
-            $("#formAdd_unit_contentAppend_"+index).empty();
-            var unit_class = 'modal_unit_content_'+index;
-            $("#formAdd_unit_contentAppend_"+index).append("<input type='hidden'  id='form_unit_type_"+index+"' value='"+unittype+"' >");
-            $("."+unit_class).each(function() {
-
-                $("#formAdd_unit_contentAppend_"+index).append("<input type='hidden'  class='form_unit_contentClass_"+index+"'  name='form_unit_content_"+index+"' value='"+$(this).val()+"' >");
-            });
-
-            $('#myModal').modal('hide');
-        });
-
-
-        function loadData(index){
-
-            var newContent;
-            var unitIndex = index;
-            var innerIndex = 1;
-            $(".form_unit_contentClass_"+index).each(function(){
-
-                newContent =  $(this).val();
-                $("#modal_form_newContentAppendDiv").append(
-                        "<div class='controls'>"
-                        + "<div class='input-append'>"
-                        + "<input  class='modal_unit_content_" + unitIndex + "' id='modal_unit_content_" + unitIndex + "_" + innerIndex + "' size='16' type='text' value='" + newContent + "'>" +
-                        "<button class='btn red' type='button' id='modal_form_unit_delete_" + innerIndex + "' value='" + innerIndex + "'>删除</button>"
-                        + "</div> </div>");
-
-                $("#modal_form_unit_delete_" + innerIndex).click(function () {
-
-                    $(this).parent().parent().remove();
-                });
-                innerIndex ++;
-            });
-
-        }
 
     });
 </script>

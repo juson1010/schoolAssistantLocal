@@ -7,12 +7,14 @@ import util.PageBean;
 
 import sun.reflect.generics.tree.FormalTypeParameter;
 
+import java.io.Serializable;
+
 /**
  * Created by cqx on 16/5/10.
  */
 public interface FormService {
 
-   public boolean createForm(Form form);
+   public Serializable createForm(Form form);
 
     public Form getForm(String formNo);
 

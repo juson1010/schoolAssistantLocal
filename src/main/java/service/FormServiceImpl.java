@@ -1,61 +1,80 @@
 package service;
 
 import dao.FormDao;
+import dao.UnitDao;
 import domain.Form.Form;
 import domain.Form.FormType;
+import domain.Unit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import util.PageBean;
+
+import java.io.Serializable;
 
 /**
  * Created by cqx on 16/5/11.
  */
+@Service
 public class FormServiceImpl implements FormService {
 
+    @Autowired
     private FormDao formDao;
+    @Autowired
+    private UnitDao unitDao;
 
-    @Override
-    public boolean createForm(Form form) {
+    public Serializable createForm(Form form) {
 
-        formDao.save(form);
 
-        return true;
+        for (Unit item:form.getUnits()) {
+            unitDao.save(item);
+        }
+
+        return formDao.save(form);
+
     }
 
-    @Override
     public Form getForm(String formNo) {
-        return null;
+//        return null;
+        return formDao.get(Form.class,Integer.parseInt(formNo));
     }
 
-    @Override
     public boolean updateForm(Form form) {
 
         formDao.update(form);
         return true;
     }
 
-    @Override
     public boolean deleteForm(Form form) {
 
         formDao.delete(form);
         return true;
     }
 
-    @Override
     public PageBean getFormsByUserId(String userId) {
         return null;
     }
 
-    @Override
     public PageBean getFormsByUserId(String userId, FormType type) {
         return null;
     }
 
-    @Override
     public PageBean getFormsByFormName(String formName) {
         return null;
     }
 
-    @Override
     public PageBean getFormsByFormName(String formName, FormType type) {
         return null;
+    }
+
+    public FormDao getFormDao() {return formDao;}
+
+    public void setFormDao(FormDao formDao) {this.formDao = formDao;}
+
+    public UnitDao getUnitDao() {
+        return unitDao;
+    }
+
+    public void setUnitDao(UnitDao unitDao) {
+        this.unitDao = unitDao;
     }
 }

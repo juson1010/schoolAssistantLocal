@@ -30,7 +30,7 @@ public class Form extends ResourceBase{
 	private Date deadline;
 
 	@ElementCollection(targetClass=Unit.class,fetch=FetchType.EAGER)
-	@CollectionTable(name="questionnaire_units",joinColumns=@JoinColumn(name="resource_id",nullable=true))
+	@CollectionTable(name="form_units",joinColumns=@JoinColumn(name="resource_id",nullable=true))
 	@Column(name="units")
 	@OrderColumn(name="list_order")
 	@Cascade(value={org.hibernate.annotations.CascadeType.ALL})

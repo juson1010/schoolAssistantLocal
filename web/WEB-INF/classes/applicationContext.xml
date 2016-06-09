@@ -108,6 +108,8 @@
 	<bean id="userInfoDao" class="dao.UserInfoDaoHibImpl"
 		  parent="daoTemplate" />
 
+	<bean id="unitDao" class="dao.UnitDaoHibImpl"
+		  parent="daoTemplate" />
 
 	<!-- Service相关 -->
 
@@ -124,6 +126,10 @@
 		<property name="questionnaireDao" ref="questionnaireDao" />
 	</bean>
 
+	<bean id="formService" class="service.FormServiceImpl">
+		<property name="formDao" ref="formDao"/>
+		<property name="unitDao" ref="unitDao" />
+	</bean>
 
 
 

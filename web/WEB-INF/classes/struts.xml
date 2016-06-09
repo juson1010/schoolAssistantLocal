@@ -53,6 +53,17 @@
             <result name="failure">/register.html</result>
         </action>
 
+
+    </package>
+
+
+    <package name="form" namespace="/" extends="struts-default">
+
+        <action name="*Form" class="controller.FormAction"
+                method="{1}">   <!-- 用于处理创建表格请求 -->
+            <result name="success">/formResult.jsp</result>
+            <result name="failure">/form2.html</result>
+        </action>
     </package>
 
 
@@ -79,6 +90,7 @@
         </action>
 
     </package>
+
     <package name="resource" namespace="/ajax" extends="json-default">
         <action name="*Resource" class="controller.ResourceAction"
                 method="{1}">
@@ -90,6 +102,14 @@
     </package>
 
 
+    <package name="form" namespace="/ajax" extends="json-default">
+        <action name="*Form" class="controller.FormAction" method="{1}">
+
+            <result type="json">
+                <param name="root">dataForInitForm</param>
+            </result>
+        </action>
+    </package>
 
 
 
