@@ -2,9 +2,11 @@ package service;
 
 import dao.FormDao;
 import dao.UnitDao;
+import dao.UserDao;
 import domain.Form.Form;
 import domain.Form.FormType;
 import domain.Unit;
+import domain.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import util.PageBean;
@@ -21,6 +23,8 @@ public class FormServiceImpl implements FormService {
     private FormDao formDao;
     @Autowired
     private UnitDao unitDao;
+    @Autowired
+    protected UserDao userDao;
 
     public Serializable createForm(Form form) {
 
@@ -28,6 +32,8 @@ public class FormServiceImpl implements FormService {
         for (Unit item:form.getUnits()) {
             unitDao.save(item);
         }
+
+
 
         return formDao.save(form);
 
@@ -39,6 +45,11 @@ public class FormServiceImpl implements FormService {
     }
 
     public boolean updateForm(Form form) {
+
+        for (Unit item:form.getUnits()) {
+            unitDao.update(item);
+        }
+
 
         formDao.update(form);
         return true;
@@ -76,5 +87,13 @@ public class FormServiceImpl implements FormService {
 
     public void setUnitDao(UnitDao unitDao) {
         this.unitDao = unitDao;
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }

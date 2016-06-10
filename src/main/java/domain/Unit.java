@@ -1,6 +1,8 @@
 
 package domain;
 
+import org.hibernate.annotations.Cascade;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +45,19 @@ public class Unit {
 
 	//选项内容
 	@ElementCollection(targetClass=String.class,fetch=FetchType.EAGER)
-	@CollectionTable(name="units_info",joinColumns=@JoinColumn(name="unit_id",nullable=true))
+	@CollectionTable(name="unit_option_contents",joinColumns=@JoinColumn(name="unit_id",nullable=true))
 	@Column(name="contents")
 	@OrderColumn(name="list_order")
 	private List<String> contents = new ArrayList<String>();
+
+	//回答的答案
+	@ElementCollection(targetClass=String.class,fetch=FetchType.EAGER)
+	@CollectionTable(name="answer_info",joinColumns=@JoinColumn(name="unit_id",nullable=true))
+	@Column(name="answers")
+	@OrderColumn(name="list_order")
+	@Cascade(value={org.hibernate.annotations.CascadeType.ALL})
+	private List<String> answers = new ArrayList<String>();
+
 
 
 	//正则表达式
@@ -60,12 +71,15 @@ public class Unit {
 	public Unit(){
 
 	}
+
 	public boolean isRequired() {
 		return isRequired;
 	}
-	public void setRequired(boolean isRequired) {
-		this.isRequired = isRequired;
+
+	public void setRequired(boolean required) {
+		isRequired = required;
 	}
+
 	public Integer getIndex() {
 		return index;
 	}
@@ -104,4 +118,8 @@ public class Unit {
 		this.contents = contents;
 	}
 
+
+	public List<String> getAnswers() {return answers;}
+
+	public void setAnswers(List<String> answers) {this.answers = answers;}
 }

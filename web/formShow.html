@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- start: Meta -->
     <meta charset="utf-8">
@@ -325,22 +326,7 @@
         <div id="content" class="span10" >
 
 
-
-
-            <div class="row-fluid sortable">
-
-                <div class="control-group">
-                    <div class="controls">
-                        <div class="input-append">
-                            <input class="input-xlarge uneditable-input" id="shareUrl" size="16" type="text">
-                            <button class="btn blue" type="button" id="shareUrlBtn">分享表格</button>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div><!--/row-->
-            <div class="row-fluid sortable">
+            <div class="row-fluid ">
                 <div class="box span12">
                     <div class="box-header" data-original-title>
                         <h2 id="form_title"><i class="halflings-icon white user"></i><span class="break"></span>title</h2>
@@ -350,7 +336,16 @@
                             <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
                         </div>
                     </div>
-                    <div class="box-content" id="form_div">
+                    <div class="box-content " id="form_div" >
+                        <form class="form-horizontal " action="submitForm.action" method="post">
+                            <fieldset id="form_fieldset">
+                                <input type="hidden" value="" id="form_colums_number">
+                                <input type="hidden" value="" name="formId" id="form_formId">
+
+
+                            </fieldset>
+
+                        </form>
 
                     </div>
                 </div><!--/span-->
@@ -428,10 +423,16 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
 
 
         $("#form_btn_refresh").click(function(){
 
+            loadData();
         });
 
         function initAll(){
@@ -439,60 +440,87 @@
             $.ajax({
 
                 type:"POST",
-                url:"ajax/shareForm.action",
-
+                url:"ajax/showForm.action",
+                data:{
+                    "formId":GetQueryString("formId")
+                },
                 success:function(data){
 
-                    alert(data);
+                    var formData = eval(data);
+                    $("#form_title").text(formData[0].filename);
 
+                    $("#form_formId").val(GetQueryString("formId"));
+                    $("#form_colums_number").val(formData.length);
+                    for(var i = 1; i<formData.length;i++){
+                        var title = formData[i].title;
+
+                        var isRequiredExtra = "";
+                        var isRequiredExtra2 = "";
+                        if (formData[i].isRequired == "true") {
+                            isRequiredExtra = "<span class='help-inline'>必填</span>";
+                            isRequiredExtra2 =  "required='required'";
+                        }
+                        if (formData[i].type == "UnitType_TEXT") {
+                            $("#form_fieldset").append(
+                                    " <div class='control-group' >"
+                                    + "<label class='control-label' for='focusedInput'>" + title + "</label><div class='controls'>"
+                                    + "<input class='input-xlarge focused' name='unitname_"+i+"' type='text' value='' "+isRequiredExtra2+" >"+isRequiredExtra+" </div> </div>");
+                        }else if (formData[i].type == "UnitType_SELECT"){
+
+                        }else{
+
+                        }
+
+                    }
+
+                    $("#form_fieldset").append( " <div class='control-group' >"
+                            +"<div class='controls'>"
+                            + "<input class='btn blue'  type='submit' value='提交'> </div> </div>");
+
+                },
+                error:function(data){
+                    alert("表单加载失败");
                 }
 
             });
         }
+
+        initAll();
 
         function loadData(){
 
             $.ajax({
 
                 type:"POST",
-                url:"ajax/shareForm.action",
-
+                url:"ajax/loadDataForm.action",
+                data:{
+                    "formId": $("#form_shareUrl").val()
+                },
                 success:function(data){
 
-                    alert(data);
+                    var formData = eval(data);
+                    alert(formData);
+
+                    var tbody = "",j = 0;
+                    var cols = $("#form_colums_number").val();
+                    for(var i = 0;i<formData.length;i++) {
+                        tbody = "";
+                        for (j = 0; j < cols; j++) {
+                            tbody = tbody + "\"" + "<td ><span class='resource_name' > " + formData[i]["title" + j] + "</span></td>" + "\"";
+                            if (j + 1 != $("#form_colums_number").val()) {
+                                tbody = tbody + ',';
+                            }
+                        }
+                        var excuetStr = " $('#form_dataTable').DataTable().row.add([" + tbody + "]).draw(false);";
+
+                        eval(excuetStr);
+                    }
+
 
                 }
 
             });
         }
-
-
-        $("#form_btn_preview").click(function(){
-
-
-            $("#form_preview_div").empty();
-            var thead = "";
-
-            $(".formAddTitle").each(function(){
-                thead = thead +"<td>" +$(this).val() +"</td>";
-            });
-
-            $("#form_preview_div").append(
-                    "<table class='table table-striped table-bordered' id='form_preview_dataTable'>"
-                    +"<thead > <tr id='form_preview_header'>"
-                    +thead
-                    +"</tr></thead> <tbody> </tbody> </table>"
-            );
-
-//            $("#form_preview_dataTable").DataTable().row.add([
-//                        "aa",
-//                        "b"
-//                    ]
-//
-//            ).draw(false);
-
-
-        });
 
     });
 </script>

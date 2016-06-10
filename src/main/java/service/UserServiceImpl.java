@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
 
     public User getUser(String userId) {
-        return null;
+        return userDao.get(User.class,Integer.parseInt(userId));
     }
 
 

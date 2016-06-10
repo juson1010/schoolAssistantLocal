@@ -10,35 +10,66 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
-
-
 </head>
+
+
+
 <body>
 
-<select id="select-beast" placeholder="Select a person...">
-    <option value="">Select a person...</option>
-    <option value="4">Thomas Edison</option>
-    <option value="1">Nikola</option>
-    <option value="3">Nikola Tesla</option>
-    <option value="5">Arnold Schwarzenegger</option>
-</select>
+
+
+<table class="table table-striped table-bordered bootstrap-datatable datatable" id="form_dataTable">
+    <thead>
+        <tr>
+            <td>thead1</td>
+            <td>thead2</td>
+            <td>thead3</td>
+        </tr>
+
+
+    </thead>
+    <tbody id="form_div">
+    <input type="hidden" id="form_colums_number" value="3">
+    </tbody>
 
 
 
 
-<script src="js/jquery-1.9.1.min.js"></script>
-<script src="js/standalone/selectize.js"></script>
-<script src="js/index.js"></script>
 
-<script type="text/javascript">
-    $('#select-beast').selectize({
-        create: true,
-        sortField: {
-            field: 'text',
-            direction: 'asc'
-        },
-        dropdownParent: 'body'
-    });
-</script>
+    <script src="js/jquery-1.9.1.min.js"></script>
+
+    <script src='js/jquery.dataTables.min.js'></script>
+
+
+
+
+    <script type="text/javascript">
+
+        var x = "[{'title0':'aaaa','title1':'bbbb','title2':'cccc'},{'title0':'1111','title1':'222','title2':'333'},{'title0':'qqq','title1':'www','title2':'rrr'}]";
+
+        var formData = eval(x);
+        var tbody = "",j = 0;
+        var cols = $("#form_colums_number").val();
+        for(var i = 0;i<formData.length;i++){
+            tbody = "";
+            for(j = 0; j<cols;j++){
+                tbody = tbody +"\""+ "<td ><span class='resource_name' > " + formData[i]["title"+j]+"</span></td>" +"\"";
+                if (j+1 != $("#form_colums_number").val()){
+                    tbody = tbody + ',';
+                }
+            }
+            var excuetStr = " $('#form_dataTable').DataTable().row.add(["+ tbody+"]).draw(false);";
+
+            eval(excuetStr);
+
+        }
+
+
+
+    </script>
+
+</table>
+
+
 </body>
 </html>

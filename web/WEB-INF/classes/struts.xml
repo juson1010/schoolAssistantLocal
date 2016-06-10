@@ -59,15 +59,24 @@
 
     <package name="form" namespace="/" extends="struts-default">
 
-        <action name="*Form" class="controller.FormAction"
-                method="{1}">   <!-- 用于处理创建表格请求 -->
-            <result name="success">/formResult.jsp</result>
+        <action name="createForm" class="controller.FormAction"
+                method="create">   <!-- 用于处理创建表格请求 -->
+            <result name="success">/formResult.html</result>
             <result name="failure">/form2.html</result>
         </action>
+
+        <action name="submitForm" class="controller.FormAction"
+                method="submit">   <!-- 用于处理创建表格请求 -->
+            <result name="success">/index.html</result>
+            <result name="failure">/formResult.html</result>
+        </action>
+
+
+
     </package>
 
 
-    <package name="register_checkUserIsExist" namespace="/ajax" extends="json-default">
+    <package name="ajaxRegister" namespace="/ajax" extends="json-default">
         <action name="checkUserIsExist" class="controller.RegisterAction"
                 method="checkUserIsExist">   <!-- 用于处理用户名是否存在 -->
             <result type="json">
@@ -91,7 +100,7 @@
 
     </package>
 
-    <package name="resource" namespace="/ajax" extends="json-default">
+    <package name="ajaxResource" namespace="/ajax" extends="json-default">
         <action name="*Resource" class="controller.ResourceAction"
                 method="{1}">
 
@@ -102,11 +111,25 @@
     </package>
 
 
-    <package name="form" namespace="/ajax" extends="json-default">
-        <action name="*Form" class="controller.FormAction" method="{1}">
+    <package name="ajaxForm" namespace="/ajax" extends="json-default">
+        <action name="loadInitDataForm" class="controller.FormAction" method="loadInitData">
 
             <result type="json">
                 <param name="root">dataForInitForm</param>
+            </result>
+        </action>
+
+        <action name="showForm" class="controller.FormAction" method="show">
+
+            <result type="json">
+                <param name="root">dataForInitForm</param>
+            </result>
+        </action>
+
+        <action name="loadDataForm" class="controller.FormAction" method="loadData">
+
+            <result type="json">
+                <param name="root">loadDataForForm</param>
             </result>
         </action>
     </package>

@@ -2,6 +2,7 @@ package test;
 
 import domain.Form.Form;
 import domain.Unit;
+import domain.User.User;
 import org.apache.struts2.components.Date;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import service.FormService;
+import service.UserService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by cqx on 16/5/12.
@@ -24,6 +28,8 @@ public class FormTest {
     @Autowired
     private FormService formService;
 
+    @Autowired
+    private UserService userService;
     public FormService getFormService() {
         return formService;
     }
@@ -32,12 +38,18 @@ public class FormTest {
         this.formService = formService;
     }
 
+    public UserService getUserService() {
+        return userService;
+    }
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Test
     public void select(){
 
 
-        Form form = formService.getForm("1277952");
+        Form form = formService.getForm("3211264");
 
         List<Unit> units = form.getUnits();
         for (Unit unit:units) {
@@ -49,7 +61,83 @@ public class FormTest {
                     System.out.println("unit content -> "+str);
                 }
             }
+
+
+            List<String> answers = unit.getAnswers();
+            for (String str: answers){
+                System.out.println("answer is " + str);
+            }
+
+
+//            Set<User> users = form.getUsers();
+            System.out.println("users size "+form.getUsers().size());
+//            for (int i = 0;i<form.getUsers().size();i++){
+//                System.out.println("user id is "+form.getUsers().get(i).getId());
+//
+//            }
         }
+
+
+
+
+    }
+
+    @Test
+    public  void update(){
+
+        Form form = formService.getForm("3211264");
+
+        List<Unit> units = form.getUnits();
+
+
+        User user = userService.getUser("2");
+        boolean flag = true;
+        int index = 0;
+
+        Iterator<User> iter = form.getUsers().iterator();
+
+        int k = 0;
+        while(iter.hasNext()){
+            User cur = (User)iter.next();
+            if (cur.getId().equals(user.getId())){
+                flag = false;
+                index = k;
+                break;
+            }
+
+            k++;
+        }
+
+        if (flag) {
+            form.getUsers().add(user);
+            System.out.println("add");
+        }
+
+
+
+
+
+
+
+        for (Unit unit:units) {
+
+            System.out.println("unitTitle is "+unit.getTitle());
+
+            if (!flag){
+                unit.getAnswers().set(index,"?????");
+            }else {
+                unit.getAnswers().add("zzzz");
+            }
+
+            System.out.println("unit Type"+unit.getType());
+            if(unit.getContents() != null && unit.getContents().size()>0){
+                for (String str:unit.getContents()) {
+                    System.out.println("unit content -> "+str);
+                }
+            }
+        }
+
+        formService.updateForm(form);
 
     }
 
