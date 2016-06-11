@@ -238,7 +238,7 @@ public class QuestionnaireAction extends ActionSupport {
         HttpServletRequest request= ServletActionContext.getRequest();
         //得到填写用户信息，并添加到数据库
         String username =(String)session.get("username");
-        List<User> users=new ArrayList<User>();
+        Set<User> users=new HashSet<User>();
         User user=userService.getUserByUsername(username);
         users.add(user);
         Questionnaire que=questionnaireService.getQuestionnaire(request.getParameter("resource_id"));

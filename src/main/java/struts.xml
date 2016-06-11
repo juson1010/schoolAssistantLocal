@@ -84,19 +84,19 @@
             </result>
         </action>
 
-        <action name="userInfoUpdate" class="controller.RegisterAction"
-                method="userInfo">   <!-- 用于处理用户修改个人信息请求 -->
-            <result type="json">
-                <param name="root">userInfoUpdateIfSuccess</param>
-            </result>
-        </action>
+        <!--<action name="userInfoUpdate" class="controller.RegisterAction"-->
+                <!--method="userInfo">   &lt;!&ndash; 用于处理用户修改个人信息请求 &ndash;&gt;-->
+            <!--<result type="json">-->
+                <!--<param name="root">userInfoUpdateIfSuccess</param>-->
+            <!--</result>-->
+        <!--</action>-->
 
-        <action name="userInfoGetInfo" class="controller.RegisterAction"
-                method="userInfoGetInfo">   <!-- 用于得到用户信息 -->
-            <result type="json">
-                <param name="root">info</param>
-            </result>
-        </action>
+        <!--<action name="userInfoGetInfo" class="controller.RegisterAction"-->
+                <!--method="userInfoGetInfo">   &lt;!&ndash; 用于得到用户信息 &ndash;&gt;-->
+            <!--<result type="json">-->
+                <!--<param name="root">info</param>-->
+            <!--</result>-->
+        <!--</action>-->
 
     </package>
 
@@ -111,13 +111,38 @@
     </package>
 
 
-    <package name="ajaxForm" namespace="/ajax" extends="json-default">
-        <action name="loadInitDataForm" class="controller.FormAction" method="loadInitData">
-
+    <package name="ajaxUserProfile" namespace="/ajax" extends="json-default">
+        <action name="userInfoGetInfo" class="controller.UserProfileAction"
+                method="userInfoGetInfo">
             <result type="json">
-                <param name="root">dataForInitForm</param>
+                <param name="root">info</param>
             </result>
         </action>
+
+        <action name="userInfoUpdate" class="controller.UserProfileAction"
+                method="userInfo">   <!-- 用于处理用户修改个人信息请求 -->
+            <result type="json">
+                <param name="root">userInfoUpdateIfSuccess</param>
+            </result>
+        </action>
+
+
+        <action name="loadFormOrQuestionnaireData" class="controller.UserProfileAction"
+        method="loadFormOrQuestionnaireData">
+
+            <result type="json">
+                <param name="root">dataFormLoadResource</param>
+            </result>
+        </action>
+
+    </package>
+    <package name="ajaxForm" namespace="/ajax" extends="json-default">
+        <!--<action name="loadInitDataForm" class="controller.FormAction" method="loadInitData">-->
+
+            <!--<result type="json">-->
+                <!--<param name="root">dataForInitForm</param>-->
+            <!--</result>-->
+        <!--</action>-->
 
         <action name="showForm" class="controller.FormAction" method="show">
 

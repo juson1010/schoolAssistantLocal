@@ -352,7 +352,6 @@
                         </div>
                     </div>
                     <div class="box-content" id="form_div">
-                        <span>&nbsp;</span>
 
 
                     </div>
@@ -432,7 +431,11 @@
     $(document).ready(function(){
 
 
-
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
         $("#form_btn_refresh").click(function(){
 
 
@@ -445,11 +448,12 @@
 
                 type:"POST",
                 url:"ajax/loadInitDataForm.action",
-
+                data:{
+                  "formId":GetQueryString("formId")
+                },
                 success:function(data){
 
                     var formData = eval(data);
-                    alert(formData[0].url);
                     $("#form_shareUrl").val(formData[0].url);
                     $("#formId").val(formData[0].formId);
                     var thead = "";
@@ -469,28 +473,48 @@
 
             });
         }
-        //初始化表格
-        initAll();
+
+
+
 
         function loadData(){
 
             $("#form_div").empty();
-            initAll();
+//            initAll();
             $.ajax({
 
                 type:"POST",
                 url:"ajax/loadDataForm.action",
                 data:{
-                    "formId": $("#formId").val()
+                    "formId": GetQueryString("formId")
                 },
                 success:function(data){
 
                     var formData = eval(data);
-                    alert(formData);
+
+
+                    $("#form_shareUrl").val(formData[0].url);
+                    $("#formId").val(formData[0].formId);
+                    var thead = "";
+                    for(var i =0;i<formData[0].cols;i++){
+                        thead = thead + "<td>"+formData[0]["head"+i]+"</td>"
+                    }
+
+                    $("#form_div").append(
+                            "<table class='table table-striped table-bordered' id='form_dataTable'>"
+                            +"<thead > <tr id='form_header'>"
+                            +thead
+                            +"</tr></thead> <tbody id='form_tbody'>" +"<input type='hidden' id='form_colums_number' value='"+formData[0].cols+"'>"
+                            +"  <span>&nbsp;</span></tbody> </table>"
+                    );
+
+
 
                     var tbody = "",j = 0;
-                    var cols = $("#form_colums_number").val();
-                    for(var i = 0;i<formData.length;i++) {
+                    var cols = formData[0].cols;
+
+
+                    for(var i = 1;i<=formData.length;i++) {
                         tbody = "";
                         for (j = 0; j < cols; j++) {
                             tbody = tbody + "\"" + "<td ><span class='resource_name' > " + formData[i]["title" + j] + "</span></td>" + "\"";
@@ -504,38 +528,28 @@
                     }
 
 
+
+                },
+                error:function(data){
+
                 }
 
             });
         }
 
 
-        $("#form_btn_preview").click(function(){
 
-
-            $("#form_preview_div").empty();
-            var thead = "";
-
-            $(".formAddTitle").each(function(){
-                thead = thead +"<td>" +$(this).val() +"</td>";
-            });
-
-            $("#form_preview_div").append(
-                    "<table class='table table-striped table-bordered' id='form_preview_dataTable'>"
-                    +"<thead > <tr id='form_preview_header'>"
-                    +thead
-                    +"</tr></thead> <tbody> </tbody> </table>"
-            );
-
-//            $("#form_preview_dataTable").DataTable().row.add([
-//                        "aa",
-//                        "b"
-//                    ]
 //
-//            ).draw(false);
+        var timeout = false; //启动及关闭按钮
+        function time()
+        {
+            if(timeout) return;
+            if($("#formId").val() != null) timeout = true;
+            loadData();
+            setTimeout(time,500); //time是指本身,延时递归调用自己,100为间隔调用时间,单位毫秒
+        }
+        time();
 
-
-        });
 
     });
 </script>

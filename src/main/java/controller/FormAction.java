@@ -190,36 +190,56 @@ public class FormAction extends ActionSupport {
         return "success";
     }
 
+/*
+* 1.刚创建完表然后跳转到FormResult
+* 2.历史表格处查看表格时跳转,此时session里没有formId和titles
+*
+*
+* */
 
-    public String loadInitData(){
-        System.out.println("enter FormAction loadInitFormData");
-
-        dataForInitForm = new ArrayList<Map>();
-        Map session=ActionContext.getContext().getSession();
-        User user = (User)session.get("user");
-
-        Map<String,String> map = new HashMap<String, String>();
-
-        System.out.println("formId is "+session.get("formId"));
-
-        List<String> titles = (List<String>) session.get("titles");
-        System.out.println("title size  is "+titles.size());
-
-        map.put("url",prefix+((Integer)session.get("formId")).toString());
-        map.put("formId",((Integer)session.get("formId")).toString());
-        dataForInitForm.add(map);
-        List<Map> t = new ArrayList<Map>();
-        for (int i = 0;i<titles.size();i++){
-            Map<String,String> tMap = new HashMap<String, String>();
-            tMap.put("title",titles.get(i));
-            t.add(tMap);
-        }
-
-        Map<String,List> m = new HashMap<String, List>();
-        m.put("titles",t);
-        dataForInitForm.add(m);
-        return SUCCESS;
-    }
+//    public String loadInitData(){
+//        System.out.println("enter FormAction loadInitFormData");
+//
+//        dataForInitForm = new ArrayList<Map>();
+//        Map session=ActionContext.getContext().getSession();
+//        User user = (User)session.get("user");
+//
+//        Map<String,String> map = new HashMap<String, String>();
+//
+//        Integer formId = (Integer)session.get("formId");
+//        if (formId == null){
+//
+//            formId = this.formId;
+//        }
+//        System.out.println("formId is "+formId);
+//
+//
+//        List<String> titles = (List<String>) session.get("titles");
+//        if (titles == null){
+//            Form form = formService.getForm(formId.toString());
+//            titles = new ArrayList<String>();
+//            for(Unit unit:form.getUnits()){
+//                titles.add(unit.getTitle());
+//            }
+//
+//        }
+//        System.out.println("title size  is "+titles.size());
+//
+//        map.put("url",prefix+formId);
+//        map.put("formId",formId.toString());
+//        dataForInitForm.add(map);
+//        List<Map> t = new ArrayList<Map>();
+//        for (int i = 0;i<titles.size();i++){
+//            Map<String,String> tMap = new HashMap<String, String>();
+//            tMap.put("title",titles.get(i));
+//            t.add(tMap);
+//        }
+//
+//        Map<String,List> m = new HashMap<String, List>();
+//        m.put("titles",t);
+//        dataForInitForm.add(m);
+//        return SUCCESS;
+//    }
 
     @Autowired
     private UserService userService;
@@ -297,6 +317,13 @@ public class FormAction extends ActionSupport {
 
         loadDataForForm = new ArrayList<Map>();
         System.out.println("enter FormAction loadData");
+
+        Map session=ActionContext.getContext().getSession();
+        if (formId == null){
+            formId = (Integer) session.get("formId");
+        }
+
+
         Form form = formService.getForm(formId.toString());
 
         System.out.println("formId is "+formId.toString());
@@ -306,10 +333,25 @@ public class FormAction extends ActionSupport {
 
         System.out.println("form user size "+form.getUsers().size());
 
+        int k = 0;
+        Map<String, String> tmap = new HashMap<String, String>();
+        for (Unit unit : units) {
+
+            tmap.put("head"+k,unit.getTitle());
+            k++;
+        }
+        tmap.put("url",prefix+formId);
+        tmap.put("formId",formId.toString());
+        tmap.put("cols",((Integer)k).toString());
+        loadDataForForm.add(tmap);
+
         for(int i = 0;i<form.getUsers().size();i++) {
             int j = 0;
 //            System.out.println("user id is "+form.getUsers().get(i).getId());
             Map<String, String> map = new HashMap<String, String>();
+
+
+            j = 0;
             for (Unit unit : units) {
 
                 map.put("title"+j, unit.getAnswers().get(i));

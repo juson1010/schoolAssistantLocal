@@ -6,21 +6,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import domain.Unit;
 import domain.Resource.ResourceBase;
 import domain.User.User;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name="Questionnaire")
@@ -49,22 +41,37 @@ public class Questionnaire extends ResourceBase {
 			inverseJoinColumns=@JoinColumn(name="user_id",
 			referencedColumnName="user_id",unique=true)
 			)*/
-	@ElementCollection(targetClass=User.class,fetch=FetchType.EAGER)
-	@CollectionTable(name="questionnaire_answers",joinColumns=@JoinColumn(name="resource_id",nullable=true))
-	@Column(name="users")
-	@OrderColumn(name="list_order")
-	private List<User> users= new ArrayList<User>();
+//	@ElementCollection(targetClass=User.class,fetch=FetchType.EAGER)
+//	@CollectionTable(name="questionnaire_answers",joinColumns=@JoinColumn(name="resource_id",nullable=true))
+//	@Column(name="users")
+//	@OrderColumn(name="list_order")
+//	private List<User> users= new ArrayList<User>();
+	@ManyToMany(targetEntity = User.class,fetch = FetchType.EAGER)
+	@JoinTable(name="questionnaire_answerUsers" ,joinColumns = @JoinColumn(name = "resource_id",referencedColumnName = "resource_id")
+			,inverseJoinColumns = @JoinColumn(name="user_id",referencedColumnName = "user_id"))
+	@Cascade(CascadeType.ALL)
+	private Set<User> users = new HashSet<User>();
 
 
-	public List<User> getUsers() {
+//	public List<User> getUsers() {
+//		return users;
+//	}
+//
+//	public void setUsers(List<User> users) {
+//		if(users==null)
+//			return ;
+//		this.users.addAll(users);
+//		//this.users = users;
+//	}
+
+
+	public Set<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
-		if(users==null)
-			return ;
-		this.users.addAll(users);
-		//this.users = users;
+	public void setUsers(Set<User> users) {
+		if (users == null) return;
+		this.users = users;
 	}
 
 	public Questionnaire(){}
